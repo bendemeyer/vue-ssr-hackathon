@@ -4,7 +4,7 @@ export default {
 </script>
 
 <template>
-	<div>
+	<div id="app">
 		Hello Evan You world!
 	</div>
 </template>

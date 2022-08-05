@@ -16,12 +16,13 @@ app.use(cookieParser());
 
 
 app.get('/', async (req, res) => {
-  const vueSSRApp = createSSRApp(app);
+  const vueSSRApp = createSSRApp(vueApp);
   const applicationHtml = await renderToString(vueSSRApp);
   console.log(applicationHtml);
   const params = {
     'param': req.query.param,
-    'subject': req.query.subject
+    'subject': req.query.subject,
+    'app': applicationHtml,
   }
   const templateRoot = path.join(__dirname,'../../html')
   const fname = path.join(templateRoot, 'index.html') 
