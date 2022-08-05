@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon dist/bundle.js",
+    "start": "nodemon dist/server/bundle.js",
     "build": "webpack --mode production --config webpack.config.js"
   },
   "dependencies": {

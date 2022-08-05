@@ -5,7 +5,7 @@ export default {
 
 <template>
 	<div>
-		Hello world!
+		Hello Evan Yue world!
 	</div>
 </template>
 
