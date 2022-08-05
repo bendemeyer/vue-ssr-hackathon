@@ -8,6 +8,34 @@ const db = { // persistence? never heard of her!
 
 const app = express();
 
+app.use((req, res, next) => {
+  console.log('mw 1 pre');
+  next();
+  console.log('mw 1 post');
+})
+app.get('/', (req, res, next) => {
+  console.log('mw 2 pre');
+  next();
+  console.log('mw 2 post');
+});
+app.use((req, res, next) => {
+  console.log('mw 3 pre');
+  next();
+  console.log('mw 3 post');
+});
+app.get('/foo', (req, res) => {
+  console.log('endpoint foo');
+  res.json({foo: 'bar'});
+});
+app.get('/', (req, res) => {
+  console.log('endpoint');
+  // res.json({foo: 'bar'});
+});
+app.post('/', (req, res) => {
+  console.log('endpoint post');
+  res.json({foo: 'bar'});
+});
+
 app.use(bodyParser.json());
 
 
