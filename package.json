@@ -2,5 +2,9 @@
   "private": true,
   "name": "vue-ssr-hackathon",
   "version": "1.0.0",
-  "main": "index.js"
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
