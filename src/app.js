@@ -6,7 +6,7 @@ const port = 3000
 
 app.get('/', (req, res) => {
   res.type('html').send('Hello again Worldie!😀')
-})
+});
 
 app.use('/', express.static(path.join(__dirname, '../public')));
 
