@@ -18,7 +18,7 @@ app.get('/', (req, res, next) => {
   next();
   console.log('mw 2 post');
 });
-app.use((req, res, next) => {
+app.use('/', (req, res, next) => {
   console.log('mw 3 pre');
   next();
   console.log('mw 3 post');
@@ -35,6 +35,11 @@ app.post('/', (req, res) => {
   console.log('endpoint post');
   res.json({foo: 'bar'});
 });
+app.use((req, res, next) => {
+  console.log('mw 4 pre');
+  next();
+  console.log('mw 4 post');
+})
 
 app.use(bodyParser.json());
 
