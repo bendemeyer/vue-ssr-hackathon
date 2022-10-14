@@ -18,6 +18,9 @@ export default {
     <p>
       <router-link to="/bar">bar</router-link>
     </p>
+    <p>
+      <router-link to="/nowhere">nowhere</router-link>
+    </p>
 	</div>
 </template>
 
