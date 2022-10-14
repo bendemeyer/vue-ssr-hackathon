@@ -35,34 +35,34 @@ const opts = {
 }
 
 app.get('/*', async (request, reply) => {
-    const vueSSRApp = createSSRApp(vueApp);
-    const router = createRouter({
-      history: createMemoryHistory(),
-      routes,
-    });
-    await router.push(request.url);
-    vueSSRApp.use(router);
-    const applicationHtml = await renderToString(vueSSRApp);
+  const vueSSRApp = createSSRApp(vueApp);
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes,
+  });
+  await router.push(request.url);
+  vueSSRApp.use(router);
+  const applicationHtml = await renderToString(vueSSRApp);
 
-    const params = {
-        'param': request.query.param,
-        'subject': request.query.subject,
-        'app': applicationHtml,
-    }
+  const params = {
+    'param': request.query.param,
+    'subject': request.query.subject,
+    'app': applicationHtml,
+  }
 
-    const templateRoot = path.join(__dirname,'../../html')
-    const fname = path.join(templateRoot, 'index.html')
-    const htmlData = fs.readFileSync(fname)
+  const templateRoot = path.join(__dirname, '../../html')
+  const fname = path.join(templateRoot, 'index.html')
+  const htmlData = fs.readFileSync(fname)
 
-    const compiled = lodash.template(htmlData)
-    const toRender = compiled(params)
+  const compiled = lodash.template(htmlData)
+  const toRender = compiled(params)
 
-    reply
-        .code(200)
-        .type("text/html")
+  reply
+    .code(200)
+    .type("text/html")
 
-    return toRender
-})
+  return toRender
+});
 
 oldapp.use((req, res, next) => {
   if (!req.cookies.hackday) {
@@ -75,12 +75,15 @@ oldapp.use('/', express.static(path.join(__dirname, '../../public')));
 
 oldapp.use('/', express.static(path.join(__dirname, '../browser')));
 
-// app.register(fastifyStatic, {
-//   root: path.join(__dirname, '../../public'),
-// })
+
+app.register(fastifyStatic, {
+  root: path.join(__dirname, '../../public'),
+  prefix: '/static/',
+})
 app.register(fastifyStatic, {
   root: path.join(__dirname, '../browser'),
   prefix: '/dist/',
+  decorateReply: false,
 })
 
 app.listen({ port });
