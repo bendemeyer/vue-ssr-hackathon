@@ -7,7 +7,7 @@ export default {
 <template>
   <div>
     <h1>Page Home</h1>
-    <p class=".home-content">home content</p>
+    <p class="home-content">home content</p>
   </div>
 </template>
 

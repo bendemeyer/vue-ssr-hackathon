@@ -7,7 +7,7 @@ export default {
 <template>
   <div>
     <h1>Page Bar</h1>
-    <p class=".bar-content">bar content</p>
+    <p class="bar-content">bar content</p>
     <router-link to="/">back home</router-link>
   </div>
 </template>

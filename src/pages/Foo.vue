@@ -7,7 +7,7 @@ export default {
 <template>
   <div>
     <h1>Page Foo</h1>
-    <p class=".foo-content">foo content</p>
+    <p class="foo-content">foo content</p>
     <router-link to="/">back home</router-link>
   </div>
 </template>
