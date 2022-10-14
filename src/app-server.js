@@ -1,11 +1,14 @@
 import express  from 'express';
 import fastify from 'fastify'
+import fastifyStatic from '@fastify/static';
 
 import path  from 'path';
 import cookieParser from 'cookie-parser';
 import { createSSRApp } from 'vue';
 import { renderToString } from 'vue/server-renderer';
-import vueApp from './app.vue';
+import { createMemoryHistory, createRouter } from 'vue-router';
+import vueApp from './root.vue';
+import routes from './routes';
 
 import lodash from 'lodash'
 import fs from 'fs'
@@ -31,8 +34,14 @@ const opts = {
   }
 }
 
-app.get('/', async (request, reply) => {
+app.get('/*', async (request, reply) => {
     const vueSSRApp = createSSRApp(vueApp);
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes,
+    });
+    await router.push(request.url);
+    vueSSRApp.use(router);
     const applicationHtml = await renderToString(vueSSRApp);
 
     const params = {
@@ -40,9 +49,9 @@ app.get('/', async (request, reply) => {
         'subject': request.query.subject,
         'app': applicationHtml,
     }
-    
+
     const templateRoot = path.join(__dirname,'../../html')
-    const fname = path.join(templateRoot, 'index.html') 
+    const fname = path.join(templateRoot, 'index.html')
     const htmlData = fs.readFileSync(fname)
 
     const compiled = lodash.template(htmlData)
@@ -55,24 +64,6 @@ app.get('/', async (request, reply) => {
     return toRender
 })
 
-oldapp.get('/', async (req, res) => {
-  const vueSSRApp = createSSRApp(vueApp);
-  const applicationHtml = await renderToString(vueSSRApp);
-  console.log(applicationHtml);
-  const params = {
-    'param': req.query.param,
-    'subject': req.query.subject,
-    'app': applicationHtml,
-  }
-  const templateRoot = path.join(__dirname,'../../html')
-  const fname = path.join(templateRoot, 'index.html') 
-  const htmlData = fs.readFileSync(fname)
-
-  const compiled = lodash.template(htmlData)
-  const toRender = compiled(params)
-  res.type('html').send(toRender)
-});
-
 oldapp.use((req, res, next) => {
   if (!req.cookies.hackday) {
     res.cookie('hackday', 'express');
@@ -84,6 +75,12 @@ oldapp.use('/', express.static(path.join(__dirname, '../../public')));
 
 oldapp.use('/', express.static(path.join(__dirname, '../browser')));
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+// app.register(fastifyStatic, {
+//   root: path.join(__dirname, '../../public'),
+// })
+app.register(fastifyStatic, {
+  root: path.join(__dirname, '../browser'),
+  prefix: '/dist/',
 })
+
+app.listen({ port });

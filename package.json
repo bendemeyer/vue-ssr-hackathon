@@ -10,13 +10,15 @@
     "dev": "webpack --mode development --watch --config webpack.config.js"
   },
   "dependencies": {
+    "@fastify/static": "^6.5.0",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.1",
     "fastify": "^4.8.1",
     "lodash": "^4.17.21",
     "uuid-js": "^0.7.5",
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.5"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
