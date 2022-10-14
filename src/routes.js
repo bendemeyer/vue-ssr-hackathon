@@ -1,7 +1,8 @@
-import Foo from './pages/Foo.vue';
-import Bar from './pages/Bar.vue';
-import Home from './pages/Home.vue';
 import PageNotFound from './pages/PageNotFound.vue'
+const Foo = () => import(/* webpackChunkName: "foo-component" */ './pages/Foo.vue');
+const Bar = () => import(/* webpackChunkName: "bar-component" */ './pages/Bar.vue');
+const Home = () => import(/* webpackChunkName: "home-component" */ './pages/Home.vue');
+
 
 const routes = [
   { path: '/', component: Home },

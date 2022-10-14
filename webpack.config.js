@@ -74,7 +74,13 @@ module.exports = [{
 	 	chunkIds: 'named',
 	 	moduleIds: 'deterministic',
 	 	concatenateModules: false,
-	 	splitChunks: false,
+	 	splitChunks: {
+			chunks: 'all',
+			minSize: 0,
+			minChunks: 2,
+			maxAsyncRequests: Infinity,
+			maxInitialRequests: Infinity,
+		},
 	 	minimizer: [],
 	},
 	plugins: [
