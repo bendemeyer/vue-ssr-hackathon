@@ -1,6 +1,7 @@
 <script setup>
 import { useCommonStore } from '../stores/commonStore'
 const store = useCommonStore()
+store.initialize()
 </script>
 
 <template>
@@ -12,7 +13,8 @@ const store = useCommonStore()
   <div>
     {{store.name}}
     {{store.count}}
-    <button @click=store.increment(1)>Click Me</button>
+    <button @click=store.increment(1)>Increment</button>
+    <button @click=store.initialize(1)>Reset</button>
   </div>
 </template>
 

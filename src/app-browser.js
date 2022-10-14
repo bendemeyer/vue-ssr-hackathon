@@ -11,6 +11,7 @@ const router = createRouter({
 });
 
 const pinia = createPinia()
+pinia.state.value = window.piniaState
 const app = createApp(appComponent);
 
 app.use(router);

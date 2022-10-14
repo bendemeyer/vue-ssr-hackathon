@@ -52,6 +52,7 @@ app.get('/*', async (request, reply) => {
     'param': request.query.param,
     'subject': request.query.subject,
     'app': applicationHtml,
+    'piniaState': JSON.stringify(JSON.stringify(pinia.state.value)),
   }
 
   const templateRoot = path.join(__dirname, '../../html')
