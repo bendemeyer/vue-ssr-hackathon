@@ -1,90 +1,96 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const fastify = require('fastify');
 const uuid = require('uuid-js');
 
 const db = { // persistence? never heard of her!
   todos: [],
 };
 
-const app = express();
+const app = fastify({ logger: true });
 
-app.use((req, res, next) => {
+// START MIDDLEWARE PLAYGROUND
+app.addHook('onRequest', (request, reply, done) => {
   console.log('mw 1 pre');
-  next();
+  done();
   console.log('mw 1 post');
 })
-app.get('/', (req, res, next) => {
-  console.log('mw 2 pre');
-  next();
-  console.log('mw 2 post');
+app.route({
+  method: 'GET',
+  url: '/',
+  onRequest: (request, reply, done) => {
+    console.log('mw 2 pre');
+    done();
+    console.log('mw 2 post');
+  },
+  handler: (request, reply) => {
+    console.log('endpoint');
+    reply.type('application/json').send({foo: 'bar'});
+  },
 });
-app.use('/', (req, res, next) => {
+app.addHook('onRequest', (request, reply, done) => {
   console.log('mw 3 pre');
-  next();
+  done();
   console.log('mw 3 post');
 });
-app.get('/foo', (req, res) => {
+app.get('/foo', (request, reply) => {
   console.log('endpoint foo');
-  res.json({foo: 'bar'});
+  reply.type('application/json').send({foo: 'bar'});
 });
-app.get('/', (req, res) => {
-  console.log('endpoint');
-  // res.json({foo: 'bar'});
-});
-app.post('/', (req, res) => {
+app.post('/', (request, reply) => {
   console.log('endpoint post');
-  res.json({foo: 'bar'});
+  reply.type('application/json').send({foo: 'bar'});
 });
-app.use((req, res, next) => {
+app.addHook('onRequest', (request, reply, done) => {
   console.log('mw 4 pre');
-  next();
+  done();
   console.log('mw 4 post');
 })
+// END MIDDLEWARE PLAYGROUND
 
-app.use(bodyParser.json());
-
-
-app.get('/todo', (req, res) => {
+app.get('/todo', async () => {
   // TODO pagination? try not to have to much to do
-  res.json({ todos: db.todos });
+  return { todos: db.todos };
 });
 
-app.post('/todo', (req, res) => {
+app.post('/todo', async (request, reply) => {
   try {
     // TODO validation? just don't send bad data yo
 
     const item = {
       id: uuid.create(4).toString(),
-      name: req.body.name,
-      title: req.body.title,
+      name: request.body.name,
+      title: request.body.title,
     };
 
     db.todos.push(item);
 
-    res.status(201).json({ ok: true, item });
+    reply.status(201);
+    return { ok: true, item }
   } catch (e) {
-    res.status(422).json({ ok: false, error: 'unknown' });
+    reply.status(422);
+    return { ok: false, error: 'unknown' };
   }
 });
 
-app.post('/todo/:id', (req, res) => {
-  for (const item of db.items) {
-    if (item.id === req.params.id) {
-      item.name = req.body.name;
-      item.title = req.body.title;
+app.post('/todo/:id', async (request, reply) => {
+  for (const item of db.todos) {
+    if (item.id === request.params.id) {
+      item.name = request.body.name;
+      item.title = request.body.title;
 
-      res.status(200).json({ ok: true });
-      return;
+      reply.status(200);
+      return { ok: true };
     }
   }
 
-  res.status(404).json({ ok: false });
+  reply.status(404);
+  return { ok: false };
 });
 
-app.delete('/todo/:id', (req, res) => {
+app.delete('/todo/:id', async (request, reply) => {
   // TODO 404 if item doesn't exist?
-  db.items = db.items.filter(({ id }) => id !== req.params.id);
-  res.status(204).json({ ok: true });
+  db.todos = db.todos.filter(({ id }) => id !== request.params.id);
+  reply.status(204);
+  return { ok: true };
 });
 
-app.listen(9999);
+app.listen({ port: 9999 });

@@ -1,0 +1,34 @@
+### middleware playground 1 - GET /
+GET http://localhost:9999/
+
+### middleware playground 1 - GET /foo
+GET http://localhost:9999/foo
+
+### middleware playground 1 - POST /
+POST http://localhost:9999/
+
+### list todos
+GET http://localhost:9999/todo
+
+### create todo
+POST http://localhost:9999/todo
+Content-Type: application/json
+
+{
+  "name": "foo",
+  "title": "bar"
+}
+
+> {% client.global.set("todo_id", response.body.item.id); %}
+
+### update todo
+POST http://localhost:9999/todo/{{todo_id}}
+Content-Type: application/json
+
+{
+  "name": "new foo",
+  "title": "new bar"
+}
+
+### delete todo
+DELETE http://localhost:9999/todo/{{todo_id}}
