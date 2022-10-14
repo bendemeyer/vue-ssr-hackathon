@@ -1,13 +1,14 @@
 import express  from 'express';
 import fastify from 'fastify'
 import fastifyStatic from '@fastify/static';
+import { createHead, renderHeadToString } from '@vueuse/head';
 
 import path  from 'path';
 import cookieParser from 'cookie-parser';
 import { createSSRApp } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { createMemoryHistory, createRouter } from 'vue-router';
-import vueApp from './root.vue';
+import root from './root.vue';
 import routes from './routes';
 
 import lodash from 'lodash'
@@ -36,9 +37,11 @@ const opts = {
 }
 
 app.get('/*', async (request, reply) => { 
-  const pinia = createPinia()
+  const pinia = createPinia();
+  const head = createHead();
 
-  const vueSSRApp = createSSRApp(vueApp);
+  const vueSSRApp = createSSRApp(root);
+  vueSSRApp.use(head);
   const router = createRouter({
     history: createMemoryHistory(),
     routes,
@@ -53,6 +56,7 @@ app.get('/*', async (request, reply) => {
     'subject': request.query.subject,
     'app': applicationHtml,
     'piniaState': JSON.stringify(JSON.stringify(pinia.state.value)),
+    'meta': renderHeadToString(head),
   }
 
   const templateRoot = path.join(__dirname, '../../html')

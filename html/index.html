@@ -1,17 +1,15 @@
-<html>
+<html<%= meta.htmlAttrs %>>
 <head>
-  <title>Express HTML
-    <%= param %> !!!!!THERE
-    Hello, <%= subject %>!
-  </title>
+  <%= meta.headTags %>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="/dist/main.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body<%= meta.bodyAttrs %>>
   <%= app %>
+  <%= meta.bodyTags %>
   <script>window.piniaState=JSON.parse(<%= piniaState %>)</script>
   <script type="text/javascript" src="/dist/bundle.js"></script>
 </body>
