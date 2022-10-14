@@ -12,6 +12,7 @@ import routes from './routes';
 
 import lodash from 'lodash'
 import fs from 'fs'
+import { createPinia } from 'pinia';
 
 const oldapp=express()
 const app = fastify({logger: true})
@@ -34,7 +35,9 @@ const opts = {
   }
 }
 
-app.get('/*', async (request, reply) => {
+app.get('/*', async (request, reply) => { 
+  const pinia = createPinia()
+
   const vueSSRApp = createSSRApp(vueApp);
   const router = createRouter({
     history: createMemoryHistory(),
@@ -42,6 +45,7 @@ app.get('/*', async (request, reply) => {
   });
   await router.push(request.url);
   vueSSRApp.use(router);
+  vueSSRApp.use(pinia);
   const applicationHtml = await renderToString(vueSSRApp);
 
   const params = {
