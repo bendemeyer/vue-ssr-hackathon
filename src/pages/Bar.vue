@@ -1,7 +1,6 @@
-<script>
-export default {
-  name: 'Bar',
-}
+<script setup>
+import { useCommonStore } from '../stores/commonStore'
+const store = useCommonStore()
 </script>
 
 <template>
@@ -9,6 +8,9 @@ export default {
     <h1>Page Bar</h1>
     <p class="bar-content">bar content</p>
     <router-link to="/">back home</router-link>
+  </div>
+  <div>
+    now counter from foo is {{store.count}}
   </div>
 </template>
 
