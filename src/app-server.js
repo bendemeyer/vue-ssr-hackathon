@@ -1,21 +1,28 @@
 import express  from 'express';
+import fastify from 'fastify'
+
 import path  from 'path';
 import cookieParser from 'cookie-parser';
 import { createSSRApp } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import vueApp from './app.vue';
 
-const lodash = require('lodash')
-const fs = require ('fs')
+import lodash from 'lodash'
+import fs from 'fs'
 
-const app = express();
+const oldapp=express()
+const app = fastify({logger: true})
 const port = 3000;
 
+//app.use(cookieParser());
 
-app.use(cookieParser());
 
+app.get('/', async (request, reply) => {
+    console.log("DEBUG: got here!")
+    return ('hello from fastify')
+})
 
-app.get('/', async (req, res) => {
+oldapp.get('/', async (req, res) => {
   const vueSSRApp = createSSRApp(vueApp);
   const applicationHtml = await renderToString(vueSSRApp);
   console.log(applicationHtml);
@@ -33,16 +40,16 @@ app.get('/', async (req, res) => {
   res.type('html').send(toRender)
 });
 
-app.use((req, res, next) => {
+oldapp.use((req, res, next) => {
   if (!req.cookies.hackday) {
     res.cookie('hackday', 'express');
   }
   next()
 });
 
-app.use('/', express.static(path.join(__dirname, '../../public')));
+oldapp.use('/', express.static(path.join(__dirname, '../../public')));
 
-app.use('/', express.static(path.join(__dirname, '../browser')));
+oldapp.use('/', express.static(path.join(__dirname, '../browser')));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
