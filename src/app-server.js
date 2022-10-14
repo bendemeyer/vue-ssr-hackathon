@@ -16,10 +16,43 @@ const port = 3000;
 
 //app.use(cookieParser());
 
+const opts = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          param: { type: 'string' },
+          subject: { type: 'string' },
+          app: { type: 'string' }
+        }
+      }
+    }
+  }
+}
 
 app.get('/', async (request, reply) => {
-    console.log("DEBUG: got here!")
-    return ('hello from fastify')
+    const vueSSRApp = createSSRApp(vueApp);
+    const applicationHtml = await renderToString(vueSSRApp);
+
+    const params = {
+        'param': request.query.param,
+        'subject': request.query.subject,
+        'app': applicationHtml,
+    }
+    
+    const templateRoot = path.join(__dirname,'../../html')
+    const fname = path.join(templateRoot, 'index.html') 
+    const htmlData = fs.readFileSync(fname)
+
+    const compiled = lodash.template(htmlData)
+    const toRender = compiled(params)
+
+    reply
+        .code(200)
+        .type("text/html")
+
+    return toRender
 })
 
 oldapp.get('/', async (req, res) => {
