@@ -36,7 +36,7 @@ const opts = {
   }
 }
 
-app.get('/*', async (request, reply) => { 
+app.get('/*', async (request, reply) => {
   const pinia = createPinia();
   const head = createHead();
 
@@ -56,7 +56,7 @@ app.get('/*', async (request, reply) => {
     'subject': request.query.subject,
     'app': applicationHtml,
     'piniaState': JSON.stringify(JSON.stringify(pinia.state.value)),
-    'meta': renderHeadToString(head),
+    'meta': await renderHeadToString(head),
   }
 
   const templateRoot = path.join(__dirname, '../../html')

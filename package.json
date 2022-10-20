@@ -4,14 +4,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon dist/server/bundle.js",
+    "start": "nodemon --inspect dist/server/bundle.js",
     "start:api": "nodemon src/api.js",
     "build": "webpack --mode production --config webpack.config.js",
     "dev": "webpack --mode development --watch --config webpack.config.js"
   },
   "dependencies": {
     "@fastify/static": "^6.5.0",
-    "@vueuse/head": "^0.9.8",
+    "@vueuse/head": "1.0.0-rc.12",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.1",
