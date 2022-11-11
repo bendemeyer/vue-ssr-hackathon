@@ -1,24 +1,30 @@
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
+import Vue from 'vue';
+import { createPinia, PiniaVuePlugin } from 'pinia';
 import appComponent from './root.vue';
-import { createRouter, createWebHistory } from 'vue-router';
+import VueRouter from 'vue-router';
 import routes from './routes';
-import { useCommonStore } from './stores/commonStore';
-import { createHead } from '@vueuse/head';
+import { createHead, HeadVuePlugin } from '@vueuse/head';
 
-const router = createRouter({
-  history: createWebHistory(),
+const router = new VueRouter({
+  mode: 'history',
   routes,
 });
 
-const pinia = createPinia()
-pinia.state.value = window.piniaState
-const app = createApp(appComponent);
+Vue.use(VueRouter);
+Vue.use(PiniaVuePlugin);
+Vue.use(HeadVuePlugin);
+
 const head = createHead();
 
-app.use(head);
-app.use(router);
-app.use(pinia);
+const pinia = createPinia();
+pinia.state.value = window.piniaState;
 
-app.mount('#app');
+const app = new Vue({
+  pinia,
+  head,
+  router,
+  render: h => h(appComponent),
+})
+
+app.$mount('#app');
 

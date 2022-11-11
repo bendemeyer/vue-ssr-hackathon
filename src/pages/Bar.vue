@@ -40,9 +40,9 @@ function toggleShowBaz() {
     <button @click="toggleShowBaz">showBaz</button>
 
     <Baz v-if="showBaz"></Baz>
-  </div>
-  <div>
-    now counter from foo is {{store.count}}
+    <div>
+      now counter from foo is {{store.count}}
+    </div>
   </div>
 </template>
 

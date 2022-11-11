@@ -1,19 +1,18 @@
 import express  from 'express';
 import fastify from 'fastify'
 import fastifyStatic from '@fastify/static';
-import { createHead, renderHeadToString } from '@vueuse/head';
+import { createHead, HeadVuePlugin, renderHeadToString } from '@vueuse/head';
 
 import path  from 'path';
-import cookieParser from 'cookie-parser';
-import { createSSRApp } from 'vue';
-import { renderToString } from 'vue/server-renderer';
-import { createMemoryHistory, createRouter } from 'vue-router';
+import Vue, { provide } from 'vue';
+import VueRouter from 'vue-router';
 import root from './root.vue';
 import routes from './routes';
 
 import lodash from 'lodash'
 import fs from 'fs'
-import { createPinia } from 'pinia';
+import { createPinia, PiniaVuePlugin } from 'pinia';
+import { createRenderer } from 'vue-server-renderer';
 
 const oldapp=express()
 const app = fastify({logger: true})
@@ -37,19 +36,27 @@ const opts = {
 }
 
 app.get('/*', async (request, reply) => {
-  const pinia = createPinia();
+  Vue.use(VueRouter);
+  Vue.use(PiniaVuePlugin);
+  Vue.use(HeadVuePlugin);
+
   const head = createHead();
 
-  const vueSSRApp = createSSRApp(root);
-  vueSSRApp.use(head);
-  const router = createRouter({
-    history: createMemoryHistory(),
+  const renderer = createRenderer();
+  const pinia = createPinia();
+  const router = new VueRouter({
+    mode: 'abstract',
     routes,
   });
   await router.push(request.url);
-  vueSSRApp.use(router);
-  vueSSRApp.use(pinia);
-  const applicationHtml = await renderToString(vueSSRApp);
+
+  const vueSSRApp = new Vue({
+    router,
+    pinia,
+    head,
+    render: h => h(root),
+  });
+  const applicationHtml = await renderer.renderToString(vueSSRApp);
 
   const params = {
     'param': request.query.param,

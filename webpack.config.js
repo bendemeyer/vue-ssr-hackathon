@@ -34,7 +34,7 @@ module.exports = [{
 	 	moduleIds: 'deterministic',
 	 	concatenateModules: false,
 	 	splitChunks: false,
-	 	minimizer: [],
+	 	// minimizer: [],
 	},
 	plugins: [
 		new CleanWebpackPlugin(),
@@ -81,7 +81,7 @@ module.exports = [{
 			maxAsyncRequests: Infinity,
 			maxInitialRequests: Infinity,
 		},
-	 	minimizer: [],
+	 	// minimizer: [],
 	},
 	plugins: [
 		new CleanWebpackPlugin(),

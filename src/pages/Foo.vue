@@ -31,12 +31,12 @@ function toggleFizz() {
     </div>
     <Baz v-if="showBaz"></Baz>
     <Fizz v-if="showFizz"></Fizz>
-  </div>
-  <div>
-    {{store.name}}
-    {{store.count}}
-    <button @click=store.increment(1)>Increment</button>
-    <button @click=store.initialize(1)>Reset</button>
+    <div>
+      {{store.name}}
+      {{store.count}}
+      <button @click=store.increment(1)>Increment</button>
+      <button @click=store.initialize(1)>Reset</button>
+    </div>
   </div>
 </template>
 
