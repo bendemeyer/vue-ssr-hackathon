@@ -2,8 +2,9 @@
 import { useCommonStore } from '../stores/commonStore'
 const store = useCommonStore()
 store.initialize()
-import { reactive, ref, defineAsyncComponent, toRefs } from 'vue';
+import { reactive, ref, defineAsyncComponent, toRefs, computed } from 'vue';
 import chunkLogger from '../chunk-logger';
+import { useHead } from '@unhead/vue';
 const Baz = defineAsyncComponent(() => import(/* webpackChunkName: "baz-component" */ '../components/Baz.vue'));
 const Fizz = defineAsyncComponent(() => import(/* webpackChunkName: "fizz-component" */ '../components/Fizz.vue'));
 
@@ -17,6 +18,14 @@ function toggleBazz() {
 function toggleFizz() {
   showFizz.value = !showFizz.value;
 }
+
+useHead(computed(() => ({
+  title: `foo ${store.count}`,
+  script: [
+    { type: 'application/ld+json', children: { foo: store.count } },
+  ],
+})));
+
 </script>
 
 <template>

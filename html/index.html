@@ -9,8 +9,9 @@
 </head>
 <body<%= meta.bodyAttrs %>>
   <%= app %>
-  <%= meta.bodyTags %>
+  <%= meta.bodyTagsOpen %>
   <script>window.piniaState=JSON.parse(<%= piniaState %>)</script>
   <script type="text/javascript" src="/dist/bundle.js"></script>
+  <%= meta.bodyTags %>
 </body>
 </html>

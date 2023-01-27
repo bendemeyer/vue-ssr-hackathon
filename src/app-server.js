@@ -1,7 +1,6 @@
 import express  from 'express';
 import fastify from 'fastify'
 import fastifyStatic from '@fastify/static';
-import { createHead, renderHeadToString } from '@vueuse/head';
 
 import path  from 'path';
 import cookieParser from 'cookie-parser';
@@ -14,6 +13,9 @@ import routes from './routes';
 import lodash from 'lodash'
 import fs from 'fs'
 import { createPinia } from 'pinia';
+import { renderSSRHead } from '@unhead/ssr';
+import setupHead from './head';
+import { VueHeadMixin } from '@unhead/vue';
 
 const oldapp=express()
 const app = fastify({logger: true})
@@ -36,9 +38,14 @@ const opts = {
   }
 }
 
-app.get('/*', async (request, reply) => { 
+app.get('/favicon.ico', async (request, reply) => {
+  reply.status(404);
+  return '';
+})
+
+app.get('/*', async (request, reply) => {
   const pinia = createPinia();
-  const head = createHead();
+  const head = setupHead();
 
   const vueSSRApp = createSSRApp(root);
   vueSSRApp.use(head);
@@ -49,6 +56,7 @@ app.get('/*', async (request, reply) => {
   await router.push(request.url);
   vueSSRApp.use(router);
   vueSSRApp.use(pinia);
+  vueSSRApp.mixin(VueHeadMixin);
   const applicationHtml = await renderToString(vueSSRApp);
 
   const params = {
@@ -56,8 +64,10 @@ app.get('/*', async (request, reply) => {
     'subject': request.query.subject,
     'app': applicationHtml,
     'piniaState': JSON.stringify(JSON.stringify(pinia.state.value)),
-    'meta': renderHeadToString(head),
+    'meta': await renderSSRHead(head),
   }
+
+  console.log('p', params.meta);
 
   const templateRoot = path.join(__dirname, '../../html')
   const fname = path.join(templateRoot, 'index.html')

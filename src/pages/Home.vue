@@ -1,12 +1,30 @@
 <script>
 export default {
   name: 'Home',
+  data() {
+    return {
+      foo: 'bar',
+    };
+  },
+  head() {
+    return {
+      title: `home: ${this.foo}`,
+    };
+  },
+  serverPrefetch() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.foo = 'bar2';
+        resolve();
+      }, 100);
+    });
+  }
 }
 </script>
 
 <template>
   <div>
-    <h1>Page Home</h1>
+    <h1>Page Home {{ foo }}</h1>
     <p class="home-content">home content</p>
   </div>
 </template>
