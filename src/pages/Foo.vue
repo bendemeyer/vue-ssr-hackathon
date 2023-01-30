@@ -5,8 +5,10 @@ store.initialize()
 import { reactive, ref, defineAsyncComponent, toRefs, computed } from 'vue';
 import chunkLogger from '../chunk-logger';
 import { useHead } from '@unhead/vue';
+import foo from '~/foo';
 const Baz = defineAsyncComponent(() => import(/* webpackChunkName: "baz-component" */ '../components/Baz.vue'));
 const Fizz = defineAsyncComponent(() => import(/* webpackChunkName: "fizz-component" */ '../components/Fizz.vue'));
+
 
 const showBaz = ref(false);
 const showFizz = ref(false);
@@ -25,6 +27,8 @@ useHead(computed(() => ({
     { type: 'application/ld+json', children: { foo: store.count } },
   ],
 })));
+
+foo('123');
 
 </script>
 

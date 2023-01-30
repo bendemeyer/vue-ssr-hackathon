@@ -1,49 +1,15 @@
-import express  from 'express';
-import fastify from 'fastify'
-import fastifyStatic from '@fastify/static';
-
-import path  from 'path';
-import cookieParser from 'cookie-parser';
 import { createSSRApp } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { createMemoryHistory, createRouter } from 'vue-router';
 import root from './root.vue';
 import routes from './routes';
 
-import lodash from 'lodash'
-import fs from 'fs'
 import { createPinia } from 'pinia';
 import { renderSSRHead } from '@unhead/ssr';
 import setupHead from './head';
 import { VueHeadMixin } from '@unhead/vue';
 
-const oldapp=express()
-const app = fastify({logger: true})
-const port = 3000;
-
-//app.use(cookieParser());
-
-const opts = {
-  schema: {
-    response: {
-      200: {
-        type: 'object',
-        properties: {
-          param: { type: 'string' },
-          subject: { type: 'string' },
-          app: { type: 'string' }
-        }
-      }
-    }
-  }
-}
-
-app.get('/favicon.ico', async (request, reply) => {
-  reply.status(404);
-  return '';
-})
-
-app.get('/*', async (request, reply) => {
+export async function render(url) {
   const pinia = createPinia();
   const head = setupHead();
 
@@ -53,56 +19,20 @@ app.get('/*', async (request, reply) => {
     history: createMemoryHistory(),
     routes,
   });
-  await router.push(request.url);
   vueSSRApp.use(router);
   vueSSRApp.use(pinia);
   vueSSRApp.mixin(VueHeadMixin);
-  const applicationHtml = await renderToString(vueSSRApp);
 
-  const params = {
-    'param': request.query.param,
-    'subject': request.query.subject,
-    'app': applicationHtml,
-    'piniaState': JSON.stringify(JSON.stringify(pinia.state.value)),
-    'meta': await renderSSRHead(head),
+  await router.push(url);
+  await router.isReady();
+
+  const ctx = {};
+  const applicationHtml = await renderToString(vueSSRApp, ctx);
+
+  return {
+    html: applicationHtml,
+    modules: ctx.modules,
+    piniaState: pinia.state.value,
+    meta: await renderSSRHead(head),
   }
-
-  console.log('p', params.meta);
-
-  const templateRoot = path.join(__dirname, '../../html')
-  const fname = path.join(templateRoot, 'index.html')
-  const htmlData = fs.readFileSync(fname)
-
-  const compiled = lodash.template(htmlData)
-  const toRender = compiled(params)
-
-  reply
-    .code(200)
-    .type("text/html")
-
-  return toRender
-});
-
-oldapp.use((req, res, next) => {
-  if (!req.cookies.hackday) {
-    res.cookie('hackday', 'express');
-  }
-  next()
-});
-
-oldapp.use('/', express.static(path.join(__dirname, '../../public')));
-
-oldapp.use('/', express.static(path.join(__dirname, '../browser')));
-
-
-app.register(fastifyStatic, {
-  root: path.join(__dirname, '../../public'),
-  prefix: '/static/',
-})
-app.register(fastifyStatic, {
-  root: path.join(__dirname, '../browser'),
-  prefix: '/dist/',
-  decorateReply: false,
-})
-
-app.listen({ port });
+}

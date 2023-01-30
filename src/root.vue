@@ -4,7 +4,7 @@ export default {
 </script>
 
 <template>
-	<div id="app">
+	<div>
     <div class="root">
 		  Hello Brandon!
     </div>

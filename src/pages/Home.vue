@@ -26,6 +26,7 @@ export default {
   <div>
     <h1>Page Home {{ foo }}</h1>
     <p class="home-content">home content</p>
+    <img src="@img/icon.png">
   </div>
 </template>
 

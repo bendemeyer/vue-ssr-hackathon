@@ -3,13 +3,15 @@
   "name": "vue-ssr-hackathon",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon --inspect=9230 dist/server/bundle.js",
+    "start": "NODE_ENV=production nodemon --inspect=9230 server.js",
     "start:api": "nodemon src/api.js",
-    "build": "webpack --mode production --config webpack.config.js",
-    "dev": "webpack --mode development --watch --config webpack.config.js"
+    "build": "vite build && vite build --ssr app-server.js",
+    "dev": "node server"
   },
   "dependencies": {
+    "@fastify/middie": "^8.1.0",
     "@fastify/static": "^6.5.0",
     "@unhead/dom": "^1.0.14",
     "@unhead/schema-org": "^0.3.0",
@@ -29,15 +31,9 @@
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
-    "clean-webpack-plugin": "^4.0.0",
-    "css-loader": "^6.7.1",
-    "mini-css-extract-plugin": "^2.6.1",
+    "@vitejs/plugin-vue": "^4.0.0",
     "nodemon": "^2.0.19",
-    "null-loader": "^4.0.1",
-    "vue-loader": "^17.0.0",
-    "vue-template-compiler": "^2.7.8",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "webpack-node-externals": "^3.0.0"
+    "vite": "^4.0.4",
+    "vue-template-compiler": "^2.7.8"
   }
 }

@@ -4,6 +4,7 @@ const store = useCommonStore()
 import chunkLogger from '../chunk-logger';
 import { defineAsyncComponent, onMounted, onServerPrefetch, ref } from 'vue';
 import { useHead } from '@unhead/vue';
+import foo from '~/foo';
 const Baz = defineAsyncComponent(() => import(/* webpackChunkName: "baz-component" */ '../components/Baz.vue'));
 
 const showBaz = ref(false);
@@ -41,6 +42,8 @@ onServerPrefetch(() => new Promise((resolve) => {
 function toggleShowBaz() {
   showBaz.value = !showBaz.value;
 }
+
+foo('456');
 
 </script>
 
