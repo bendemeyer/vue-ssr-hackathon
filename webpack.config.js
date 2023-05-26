@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const { VueLoaderPlugin } = require('vue-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ChunkyPlugin = require('./chunk-plugin');
 
 
 module.exports = [{
@@ -87,5 +88,6 @@ module.exports = [{
 		new CleanWebpackPlugin(),
 		new VueLoaderPlugin(),
 		new MiniCssExtractPlugin(),
+		new ChunkyPlugin(),
 	],
 }];

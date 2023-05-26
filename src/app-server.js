@@ -1,7 +1,7 @@
 import express  from 'express';
 import fastify from 'fastify'
 import fastifyStatic from '@fastify/static';
-import { createHead, HeadVuePlugin, renderHeadToString } from '@vueuse/head';
+// import { createHead, renderHeadToString } from '@vueuse/head';
 
 import path  from 'path';
 import Vue, { provide } from 'vue';
@@ -38,9 +38,9 @@ const opts = {
 app.get('/*', async (request, reply) => {
   Vue.use(VueRouter);
   Vue.use(PiniaVuePlugin);
-  Vue.use(HeadVuePlugin);
+  // Vue.use(HeadVuePlugin);
 
-  const head = createHead();
+  // const head = createHead();
 
   const renderer = createRenderer();
   const pinia = createPinia();
@@ -53,7 +53,7 @@ app.get('/*', async (request, reply) => {
   const vueSSRApp = new Vue({
     router,
     pinia,
-    head,
+    // head,
     render: h => h(root),
   });
   const applicationHtml = await renderer.renderToString(vueSSRApp);
@@ -63,7 +63,8 @@ app.get('/*', async (request, reply) => {
     'subject': request.query.subject,
     'app': applicationHtml,
     'piniaState': JSON.stringify(JSON.stringify(pinia.state.value)),
-    'meta': await renderHeadToString(head),
+    // 'meta': await renderHeadToString(head),
+    'meta': {},
   }
 
   const templateRoot = path.join(__dirname, '../../html')

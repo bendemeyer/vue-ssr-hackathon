@@ -1,27 +1,27 @@
 <script setup>
 import { useCommonStore } from '../stores/commonStore'
-import { useHead } from '@vueuse/head';
+// import { useHead } from '@vueuse/head';
 const store = useCommonStore()
 import chunkLogger from '../chunk-logger';
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 const Baz = defineAsyncComponent(() => import(/* webpackChunkName: "baz-component" */ '../components/Baz.vue'));
 
-const showBaz = ref(false);
+const showBaz = ref(true);
 
-const barPage = ref({
-  description: 'Bar page',
-});
-const title = ref('bar title');
-
-useHead({
-  title,
-  meta: [
-    { name: 'description', content: () => barPage.value.description },
-  ],
-  style: [
-    { type: 'text/css', textContent: 'body { background: blue; }' },
-  ],
-})
+// const barPage = ref({
+//   description: 'Bar page',
+// });
+// const title = ref('bar title');
+//
+// useHead({
+//   title,
+//   meta: [
+//     { name: 'description', content: () => barPage.value.description },
+//   ],
+//   style: [
+//     { type: 'text/css', textContent: 'body { background: blue; }' },
+//   ],
+// })
 
 onMounted(() => chunkLogger('Bar'));
 
