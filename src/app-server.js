@@ -2,6 +2,7 @@ import express  from 'express';
 import fastify from 'fastify'
 import fastifyStatic from '@fastify/static';
 // import { createHead, renderHeadToString } from '@vueuse/head';
+import ssrManifest from '../dist/browser/ssr-manifest.json';
 
 import path  from 'path';
 import Vue, { provide } from 'vue';
@@ -56,7 +57,43 @@ app.get('/*', async (request, reply) => {
     // head,
     render: h => h(root),
   });
-  const applicationHtml = await renderer.renderToString(vueSSRApp);
+  const chunks = new Set(ssrManifest.initialChunks);
+  const registeredComponents = new Set();
+  const applicationHtml = await renderer.renderToString(vueSSRApp, {
+    _registeredComponents: registeredComponents,
+  });
+
+  [...registeredComponents].forEach((component) => {
+    chunks.add(ssrManifest.componentChunkMap[component][0]);
+  });
+
+  const filesToLoad = [];
+
+  [...chunks].forEach((chunk) => {
+    filesToLoad.push(...ssrManifest.chunkFilesMap[chunk]);
+  });
+
+  let preloads = '';
+  let styles = '';
+  let scripts = '';
+
+  filesToLoad.forEach((file) => {
+      if (/\.js$/.test(file)) {
+        preloads += `<link rel="preload" href="${ssrManifest.publicPath}${file}" as="script">`;
+        scripts += `<script type="text/javascript" src="${ssrManifest.publicPath}${file}" defer></script>`;
+      } else if (/\.css$/.test(file)) {
+        // not sure if this preload is necessary since both of these go in the head
+        preloads += `<link rel="preload" href="${ssrManifest.publicPath}${file}" as="style">`;
+        styles += `<link rel="stylesheet" href="${ssrManifest.publicPath}${file}">`;
+      } else if (/\.(jpe?g|png|svg|gif)$/.test(file)) {
+        preloads += `<link rel="preload" href="${ssrManifest.publicPath}${file}" as="image">`;
+      } else if (/\.(woff2?)$/.test(file)) {
+        preloads += `<link rel="preload" href="${ssrManifest.publicPath}${file}" as="font" crossorigin>`;
+      }
+    });
+
+
+  console.log('hi components', registeredComponents);
 
   const params = {
     'param': request.query.param,
@@ -65,6 +102,9 @@ app.get('/*', async (request, reply) => {
     'piniaState': JSON.stringify(JSON.stringify(pinia.state.value)),
     // 'meta': await renderHeadToString(head),
     'meta': {},
+    'preloads': preloads,
+    'scripts': scripts,
+    'styles': styles,
   }
 
   const templateRoot = path.join(__dirname, '../../html')
@@ -104,3 +144,20 @@ app.register(fastifyStatic, {
 })
 
 app.listen({ port });
+
+
+
+
+
+
+
+
+
+// app renders
+// → which components were used (context._registeredComponents)
+//   → which chunks do those components live in (manifest.componentChunkMap)
+//   + which chunk is the entrypoint in (manifest.initialChunks)
+//     → which files need to be loaded for those chunks (manifest.chunkFilesMap)
+
+
+

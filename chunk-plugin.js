@@ -38,6 +38,7 @@ class ChunkPlugin {
     // 2. Map of which file(s) to load for each chunk
     //    Contains both JS, CSS, and any additional assets that should be preloaded
     manifest.chunkFilesMap = {};
+    manifest.publicPath = stats.publicPath;
     stats.chunks.forEach((chunk) => {
       const chunkFiles = chunk.files.concat(chunk.auxiliaryFiles);
       if (chunkFiles.length) {

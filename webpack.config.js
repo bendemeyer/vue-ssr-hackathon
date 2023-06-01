@@ -13,6 +13,7 @@ module.exports = [{
 	output: {
 		path: path.join(__dirname, 'dist/server'),
 		filename: 'bundle.js',
+		publicPath: "/dist/",
 	},
 	module: {
 		rules: [
@@ -49,6 +50,7 @@ module.exports = [{
 	output: {
 		path: path.join(__dirname, 'dist/browser'),
 		filename: 'bundle.js',
+		publicPath: "/dist/",
 	},
 	module: {
 		rules: [
