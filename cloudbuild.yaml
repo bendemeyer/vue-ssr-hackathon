@@ -1,4 +1,9 @@
 steps:
+# NPM install and Test
+- name: "gcr.io/cloud-builders/npm"
+  args: ["install"]
+- name: "gcr.io/cloud-builders/npm"
+  args: ["run", "test"] 
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA', '.']
