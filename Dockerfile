@@ -1,5 +1,5 @@
 FROM node:20
-LABEL authors="hackday"
+LABEL authors="hackday!"
 COPY . ./
 EXPOSE 3000
 RUN npm i
