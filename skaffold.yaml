@@ -20,5 +20,5 @@ verify:
     container:
       name: hackday-verify-image
       image: hackday-verify-image
-      command: ['run']
+      args: ['run']
 
