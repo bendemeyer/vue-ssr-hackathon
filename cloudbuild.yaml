@@ -1,6 +1,6 @@
 steps:
 - name: 'docker'
-  args: [ 'build', '-t', 'hackathon', '.' ]
+  args: [ 'build', '-t', 'us-east1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker/hackathon:v1.0', '.' ]
 
 images:
-  - 'us-east1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker'
+  - 'us-east1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker/hackathon:v1.0'
