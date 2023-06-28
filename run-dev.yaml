@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       containers:
-        - image: heackday-image
+        - image: hackday-image
           ports:
             - name: http1
               containerPort: 3000
