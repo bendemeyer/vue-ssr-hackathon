@@ -11,4 +11,6 @@ RUN npm i
 COPY . ./
 RUN npm run build
 
+ENV FOO=default-from-dockerfile
+
 CMD npm run start

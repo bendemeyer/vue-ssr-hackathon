@@ -36,7 +36,14 @@ const opts = {
   }
 }
 
-app.get('/*', async (request, reply) => { 
+app.get('/env', async (request, reply) => {
+  reply.status(200).type('application/json').send({
+    foo: process.env.FOO || 'yo FOO is not set',
+    bar: process.env.BAR || 'yo BAR is not set',
+  });
+})
+
+app.get('/*', async (request, reply) => {
   const pinia = createPinia();
   const head = createHead();
 

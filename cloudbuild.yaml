@@ -3,14 +3,23 @@ steps:
 - name: "gcr.io/cloud-builders/npm"
   args: ["install"]
 - name: "gcr.io/cloud-builders/npm"
-  args: ["run", "test"] 
+  args: ["run", "test"]
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA', '.']
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA']
+
 # Deploy container image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
   args: ['run', 'deploy', 'hackathon-service', '--image', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA', '--region', 'us-central1']
+
+# Deploy using cloud deploy to cloud run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['deploy', 'apply', '--file=clouddeploy.yaml', '--region=us-central1', '--project=decomp-phase-2-hack-day']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['deploy', 'releases', 'create', 'release-$SHORT_SHA', '--region=us-central1', '--project=decomp-phase-2-hack-day', '--delivery-pipeline=hackday-pipeline', '--images=hackday-image=us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA']
