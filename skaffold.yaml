@@ -11,5 +11,10 @@ profiles:
     manifests:
       rawYaml:
         - run-prod.yaml
-deploy:
-  cloudrun: {}
+verify:
+  - name: hackday-verify-image
+    container:
+      name: hackday-verify-image
+      image: hackday-verify-image
+      command: ['run']
+

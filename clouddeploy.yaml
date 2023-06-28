@@ -7,8 +7,19 @@ serialPipeline:
   stages:
     - targetId: run-hackday-dev
       profiles: [dev]
+      strategy:
+        standard:
+          verify: true
     - targetId: run-hackday-prod
       profiles: [prod]
+      strategy:
+        canary:
+          runtimeConfig:
+            cloudRun:
+              automaticTrafficControl: true
+          canaryDeployment:
+            percentages: [10, 25, 50]
+            verify: true
 ---
 
 apiVersion: deploy.cloud.google.com/v1
