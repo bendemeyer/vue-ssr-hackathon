@@ -1,24 +1,39 @@
-apiVersion: skaffold/v3alpha1
+apiVersion: skaffold/v4beta6
 kind: Config
 metadata:
-  name: hackday-cloud-deploy
+  name: vue-ssr-hackathon
+build:
+  artifacts:
+    - image: hackday-dev-image
+      sync:
+        manual:
+          - src: src/**/*
+            dest: /app
+          - src: public/**/*
+            dest: /app
+          - src: html/**/*
+            dest: /app
+      docker:
+        dockerfile: Dockerfile
+        target: dev
+test:
+  - image: hackday-dev-image
+    custom:
+      - command: npm run test
 profiles:
+  - name: local
+    manifests:
+      rawYaml:
+        - cicd/local.yaml
+    portForward:
+      - resourceType: deployment
+        resourceName: hackday
+        port: 3000
   - name: dev
     manifests:
       rawYaml:
-        - run-dev.yaml
+        - cicd/cloud-run-dev.yaml
   - name: prod
     manifests:
       rawYaml:
-        - run-prod.yaml
-
-deploy:
-  cloudrun: {}
-
-verify:
-  - name: hackday-verify-image
-    container:
-      name: hackday-verify-image
-      image: hackday-verify-image
-      args: ['run']
-
+        - cicd/cloud-run-prod.yaml

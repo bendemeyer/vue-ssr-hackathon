@@ -5,3 +5,6 @@
 .idea
 .vscode
 .gitignore
+cicd
+skaffold.yaml
+cloudbuild.yaml

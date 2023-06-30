@@ -91,7 +91,6 @@ oldapp.use('/', express.static(path.join(__dirname, '../../public')));
 
 oldapp.use('/', express.static(path.join(__dirname, '../browser')));
 
-
 app.register(fastifyStatic, {
   root: path.join(__dirname, '../../public'),
   prefix: '/static/',
