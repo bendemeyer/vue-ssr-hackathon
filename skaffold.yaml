@@ -35,12 +35,24 @@ profiles:
   - name: dev
     deploy:
       cloudrun: {}
+    verify:
+      - name: hackday-verify-image
+        container:
+          name: hackday-verify-image
+          image: hackday-verify-image
+          args: [ 'run' ]
     manifests:
       rawYaml:
         - cicd/cloud-run-dev.yaml
   - name: prod
     deploy:
       cloudrun: {}
+    verify:
+      - name: hackday-verify-image
+        container:
+          name: hackday-verify-image
+          image: hackday-verify-image
+          args: [ 'run' ]
     manifests:
       rawYaml:
         - cicd/cloud-run-prod.yaml
