@@ -33,10 +33,14 @@ profiles:
         resourceName: hackday
         port: 9229
   - name: dev
+    deploy:
+      cloudrun: {}
     manifests:
       rawYaml:
         - cicd/cloud-run-dev.yaml
   - name: prod
+    deploy:
+      cloudrun: {}
     manifests:
       rawYaml:
         - cicd/cloud-run-prod.yaml
