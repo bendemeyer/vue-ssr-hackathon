@@ -2,26 +2,26 @@ apiVersion: skaffold/v3alpha1
 kind: Config
 metadata:
   name: vue-ssr-hackathon
-build:
-  artifacts:
-    - image: hackday-dev-image
-      sync:
-        manual:
-          - src: src/**/*
-            dest: /app
-          - src: public/**/*
-            dest: /app
-          - src: html/**/*
-            dest: /app
-      docker:
-        dockerfile: Dockerfile
-        target: dev
-test:
-  - image: hackday-dev-image
-    custom:
-      - command: npm run test
 profiles:
   - name: local
+    build:
+      artifacts:
+        - image: hackday-dev-image
+          sync:
+            manual:
+              - src: src/**/*
+                dest: /app
+              - src: public/**/*
+                dest: /app
+              - src: html/**/*
+                dest: /app
+          docker:
+            dockerfile: Dockerfile
+            target: dev
+    test:
+      - image: hackday-dev-image
+        custom:
+          - command: npm run test
     manifests:
       rawYaml:
         - cicd/local.yaml
