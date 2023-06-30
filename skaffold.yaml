@@ -29,6 +29,9 @@ profiles:
       - resourceType: deployment
         resourceName: hackday
         port: 3000
+      - resourceType: deployment
+        resourceName: hackday
+        port: 9229
   - name: dev
     manifests:
       rawYaml:
