@@ -28,11 +28,6 @@ steps:
   args: [ 'push', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:$SHORT_SHA' ]
   waitFor: ['build-e2e']
 
-# Deploy container image to Cloud Run
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args: ['run', 'deploy', 'hackathon-service', '--image', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA', '--region', 'us-central1']
-
 # Deploy using cloud deploy to cloud run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
