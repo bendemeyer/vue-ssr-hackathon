@@ -17,9 +17,24 @@ serialPipeline:
           runtimeConfig:
             cloudRun:
               automaticTrafficControl: true
-          canaryDeployment:
-            percentages: [10, 25, 50]
-            verify: true
+          customCanaryDeployment:
+            phaseConfigs:
+              - phaseId: smoke
+                percentage: 0
+                profiles: [prod]
+                verify: true
+              - phaseId: canary-10
+                percentage: 10
+                profiles: [prod]
+                verify: false
+              - phaseId: canary-50
+                percentage: 50
+                profiles: [prod]
+                verify: false
+              - phaseId: stable
+                percentage: 100
+                profiles: [prod]
+                verify: false
 ---
 
 apiVersion: deploy.cloud.google.com/v1
