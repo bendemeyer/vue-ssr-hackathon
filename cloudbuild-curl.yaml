@@ -1,0 +1,9 @@
+steps:
+# NPM install and Test
+- name: "gcr.io/cloud-builders/curl"
+  args: ["-v", "https://deploy-hackday-dev-sksi3wav7q-uc.a.run.app"]
+
+options:
+  pool:
+    name: 'projects/decomp-phase-2-hack-day/locations/us-central1/workerPools/hackday-pool'
+  logging: CLOUD_LOGGING_ONLY

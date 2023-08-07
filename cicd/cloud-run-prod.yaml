@@ -6,6 +6,10 @@ metadata:
     run.googleapis.com/ingress: internal-and-cloud-load-balancing
 spec:
   template:
+    metadata:
+      annotations:
+        run.googleapis.com/vpc-access-connector: cloud-run-vpc-access
+        run.googleapis.com/startup-cpu-boost: 'true'
     spec:
       containers:
         - image: hackday-image
