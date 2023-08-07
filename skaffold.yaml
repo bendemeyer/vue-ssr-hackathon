@@ -41,6 +41,11 @@ profiles:
           name: hackday-verify-image
           image: hackday-verify-image
           args: [ 'run' ]
+      - name: ubuntu
+        container:
+          name: ubuntu
+          image: ubuntu
+          args: [ 'env' ]
     manifests:
       rawYaml:
         - cicd/cloud-run-dev.yaml
@@ -53,6 +58,11 @@ profiles:
           name: hackday-verify-image
           image: hackday-verify-image
           args: [ 'run' ]
+      - name: ubuntu
+        container:
+          name: ubuntu
+          image: ubuntu
+          args: [ 'env' ]
     manifests:
       rawYaml:
         - cicd/cloud-run-prod.yaml
