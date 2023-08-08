@@ -1,7 +1,7 @@
 describe('some test', () => {
   it('should try?', () => {
     cy.request('/').then((response) => {
-      console.log('hi body', response.body);
+      console.log('hi body', response.status, JSON.stringify(response.headers), response.body);
     });
   });
 
