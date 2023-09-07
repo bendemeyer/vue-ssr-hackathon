@@ -11,26 +11,26 @@ spec:
         run.googleapis.com/vpc-access-connector: cloud-run-vpc-access
     spec:
       containers:
-        - image: hackday-image
-          ports:
-            - name: http1
-              containerPort: 3000
-          env:
-            - name: FOO
-              value: dev foo
-            - name: BAR
-              valueFrom:
-                secretKeyRef:
-                  key: latest
-                  name: val-secret
-          resources:
-            limits:
-              cpu: 500m
-              memory: 256Mi
-          startupProbe:
-            timeoutSeconds: 240
-            periodSeconds: 240
-            failureThreshold: 1
-            tcpSocket:
-              port: 3000
+      - image: hackday-image
+        ports:
+        - name: http1
+          containerPort: 3000
+        env:
+        - name: FOO
+          value: dev foo
+        - name: BAR
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: val-secret
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        startupProbe:
+          timeoutSeconds: 240
+          periodSeconds: 240
+          failureThreshold: 1
+          tcpSocket:
+            port: 3000
 

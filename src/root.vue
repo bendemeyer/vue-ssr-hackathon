@@ -6,7 +6,7 @@ export default {
 <template>
 	<div id="app">
     <div class="root">
-		  Hello Brandon & co!!!
+		  Hello Brandon & co?
     </div>
 
     <router-view></router-view>

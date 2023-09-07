@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "vue-ssr-hackathon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "start": "node dist/server/bundle.js",
     "start:dev": "mkdir -p dist/server && touch dist/server/bundle.js && nodemon --inspect dist/server/bundle.js",

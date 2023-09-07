@@ -1,0 +1,38 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: hackday-verify
+  annotations:
+    run.googleapis.com/launch-stage: BETA
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/network-interfaces: '[{"network":"hackday-vpc","subnetwork":"hackday-subnet-central"}]'
+        run.googleapis.com/vpc-access-egress: private-ranges-only
+    spec:
+      taskCount: 10
+      parallelism: 10
+      template:
+        spec:
+          maxRetries: 0
+          containers:
+            - image: us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:d655876
+              args: ['run']
+              env:
+                - name: CYPRESS_BASE_URL
+                  value: 'https://old---deploy-hackday-dev-sksi3wav7q-uc.a.run.app'
+                - name: NO_COLOR
+                  value: '1'
+                - name: ELECTRON_ENABLE_LOGGING
+                  value: '1'
+              resources:
+                limits:
+                  memory: 1Gi
+                  cpu: 1000m
+#            - image: "gcr.io/cloud-builders/curl"
+#              args: ["-v", "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"]
+#              resources:
+#                limits:
+#                  memory: 1Gi
+#                  cpu: 1000m

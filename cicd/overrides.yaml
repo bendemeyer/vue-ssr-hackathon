@@ -1,0 +1,14 @@
+# apply with
+# yq '.spec.template.spec.containers[0].env |= (. + (load("overrides.yaml") | .spec.container.env) | reverse | unique_by(.name) | reverse) | .spec.template.spec.containers[0] |= (. * (load("overrides.yaml") | .spec.container | del(.env)))'
+apiVersion: custom.zoro.com/v1
+kind: EphemeralOverrides
+spec:
+  container:
+    env:
+    - name: FOO
+      value: dev override foo
+    - name: BAZ
+      value: asdf
+    resources:
+      limits:
+        cpu: 1000m
