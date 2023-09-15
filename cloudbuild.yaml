@@ -30,6 +30,8 @@ steps:
 
 # Deploy using cloud deploy to cloud run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  env:
+  - 'IMAGE_NAME=$_IMAGE_NAME'
   script: |
     #!/bin/bash -e
     BRANCH_HASH="$(echo ${BRANCH_NAME} | sha256sum | head -c8)"
@@ -46,7 +48,7 @@ steps:
       --region=${LOCATION} \
       --project=${PROJECT_ID} \
       --delivery-pipeline=hackday-pipeline \
-      --images=hackday-image=${_IMAGE_NAME} \
+      --images=hackday-image=${IMAGE_NAME} \
       --deploy-parameters=deploy_branch=${BRANCH_NAME},deploy_sha=${SHORT_SHA}
 
 substitutions:
