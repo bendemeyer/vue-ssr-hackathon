@@ -1,9 +1,8 @@
 steps:
-  # build dev image and run test
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'hackthon-dev', '--target', 'dev', '.']
-- name: "hackathon-dev"
-  entrypoint: "npm"
+# NPM install and Test
+- name: "gcr.io/cloud-builders/npm"
+  args: ["install"]
+- name: "gcr.io/cloud-builders/npm"
   args: ["run", "test"]
   id: test
 
