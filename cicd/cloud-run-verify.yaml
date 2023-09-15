@@ -3,14 +3,14 @@ kind: Job
 metadata:
   name: hackday-verify-DEPLOY_BRANCH_HASH
   labels:
-    originBranch: DEPLOY_BRANCH_NAME
+    origin-branch: DEPLOY_BRANCH_NAME
   annotations:
     run.googleapis.com/launch-stage: BETA
 spec:
   template:
     metadata:
       labels:
-        originBranch: DEPLOY_BRANCH_NAME
+        origin-branch: DEPLOY_BRANCH_NAME
       annotations:
         run.googleapis.com/network-interfaces: '[{"network":"hackday-vpc","subnetwork":"hackday-subnet-central"}]'
         run.googleapis.com/vpc-access-egress: private-ranges-only

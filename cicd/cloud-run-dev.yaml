@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: deploy-hackday-dev # from-param: ${deploy_name}
   labels:
-    originBranch: master # from-param: ${deploy_branch}
+    origin-branch: master # from-param: ${deploy_branch}
   annotations:
     run.googleapis.com/ingress: internal-and-cloud-load-balancing
 spec:

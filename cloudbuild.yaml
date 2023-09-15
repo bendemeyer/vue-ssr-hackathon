@@ -32,22 +32,22 @@ steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   script: |
     #!/bin/bash -e
-    BRANCH_HASH="$(echo $BRANCH_NAME | sha256sum | head -c8)"
+    BRANCH_HASH="$(echo ${BRANCH_NAME} | sha256sum | head -c8)"
 
-    sed -i "s/BRANCH_HASH/$BRANCH_HASH/g" clouddeploy.yaml
-    sed -i "s/BRANCH_NAME/$BRANCH_NAME/g" clouddeploy.yaml
+    sed -i "s/BRANCH_HASH/${BRANCH_HASH}/g" clouddeploy.yaml
+    sed -i "s/BRANCH_NAME/${BRANCH_NAME}/g" clouddeploy.yaml
 
     gcloud deploy apply \
       --file=clouddeploy.yaml \
-      --region=$LOCATION \
-      --project=$PROJECT_ID
+      --region=${LOCATION} \
+      --project=${PROJECT_ID}
 
-    gcloud deploy releases create release-$SHORT_SHA \
-      --region=$LOCATION \
-      --project=$PROJECT_ID \
+    gcloud deploy releases create release-${SHORT_SHA} \
+      --region=${LOCATION} \
+      --project=${PROJECT_ID} \
       --delivery-pipeline=hackday-pipeline \
-      --images=hackday-image=$_IMAGE_NAME \
-      --deploy-parameters=deploy_branch=$BRANCH_NAME,deploy_sha=$SHORT_SHA
+      --images=hackday-image=${_IMAGE_NAME} \
+      --deploy-parameters=deploy_branch=${BRANCH_NAME},deploy_sha=${SHORT_SHA}
 
 substitutions:
   _IMAGE_NAME: '${LOCATION}-docker.pkg.dev/${PROJECT_ID}/hack-day-docker-central/hackathon:${SHORT_SHA}'
