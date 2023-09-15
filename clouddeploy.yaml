@@ -3,7 +3,7 @@ kind: DeliveryPipeline
 metadata:
   name: hackday-pipeline
   labels:
-    origin-branch: BRANCH_NAME
+    origin-branch: $BRANCH_NAME
 description: hackday pipeline
 serialPipeline:
   stages:

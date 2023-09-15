@@ -1,16 +1,16 @@
 apiVersion: run.googleapis.com/v1
 kind: Job
 metadata:
-  name: hackday-verify-DEPLOY_BRANCH_HASH
+  name: hackday-verify-$DEPLOY_BRANCH_HASH
   labels:
-    origin-branch: DEPLOY_BRANCH_NAME
+    origin-branch: $DEPLOY_BRANCH_NAME
   annotations:
     run.googleapis.com/launch-stage: BETA
 spec:
   template:
     metadata:
       labels:
-        origin-branch: DEPLOY_BRANCH_NAME
+        origin-branch: $DEPLOY_BRANCH_NAME
       annotations:
         run.googleapis.com/network-interfaces: '[{"network":"hackday-vpc","subnetwork":"hackday-subnet-central"}]'
         run.googleapis.com/vpc-access-egress: private-ranges-only
@@ -21,7 +21,7 @@ spec:
         spec:
           maxRetries: 0
           containers:
-            - image: us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:DEPLOY_SHA
+            - image: us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:$DEPLOY_SHA
               args: ['run']
               env:
                 - name: CYPRESS_BASE_URL

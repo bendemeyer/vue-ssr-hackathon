@@ -4,9 +4,9 @@ steps:
     #!/bin/bash
     BRANCH_HASH="$(echo $_DEPLOY_BRANCH | sha256sum | head -c8)"
     
-    sed -i "s/DEPLOY_BRANCH_HASH/$BRANCH_HASH/g" cicd/cloud-run-verify.yaml
-    sed -i "s/DEPLOY_BRANCH_NAME/$_DEPLOY_BRANCH/g" cicd/cloud-run-verify.yaml
-    sed -i "s/DEPLOY_SHA/$_DEPLOY_SHA/g" cicd/cloud-run-verify.yaml
+    sed -i "s/\$DEPLOY_BRANCH_HASH/$BRANCH_HASH/g" cicd/cloud-run-verify.yaml
+    sed -i "s/\$DEPLOY_BRANCH_NAME/$_DEPLOY_BRANCH/g" cicd/cloud-run-verify.yaml
+    sed -i "s/\$DEPLOY_SHA/$_DEPLOY_SHA/g" cicd/cloud-run-verify.yaml
     
     gcloud run jobs replace \
       --region=us-central1 \
