@@ -8,35 +8,54 @@ steps:
 
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA', '.']
+  args: ['build', '-t', '$_IMAGE_NAME', '.']
   id: 'build'
   waitFor: ['test']
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA']
+  args: ['push', '$_IMAGE_NAME']
   waitFor: ['build']
 
 # Build the test image
 - name: 'gcr.io/cloud-builders/docker'
   dir: 'e2e'
-  args: [ 'build', '-t', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:$SHORT_SHA', '.' ]
+  args: ['build', '-t', '$_VERIFY_IMAGE_NAME', '.']
   id: 'build-e2e'
   waitFor: ['test']
 # Push the test image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   dir: 'e2e'
-  args: [ 'push', 'us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:$SHORT_SHA' ]
+  args: ['push', '$_VERIFY_IMAGE_NAME']
   waitFor: ['build-e2e']
 
 # Deploy using cloud deploy to cloud run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args: ['deploy', 'apply', '--file=clouddeploy.yaml', '--region=us-central1', '--project=decomp-phase-2-hack-day']
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args: ['deploy', 'releases', 'create', 'release-$SHORT_SHA', '--region=us-central1', '--project=decomp-phase-2-hack-day', '--delivery-pipeline=hackday-pipeline', '--images=hackday-image=us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon:$SHORT_SHA,hackday-verify-image=us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:$SHORT_SHA']
+  script: |
+    #!/bin/bash
+    BRANCH_HASH="$(echo $BRANCH_NAME | sha256sum | head -c8)"
+
+    sed -i "s/BRANCH_HASH/$BRANCH_HASH/g" clouddeploy.yaml
+    sed -i "s/BRANCH_NAME/$BRANCH_NAME/g" clouddeploy.yaml
+
+    gcloud deploy apply \
+      --file=clouddeploy.yaml \
+      --region=$LOCATION \
+      --project=$PROJECT_ID
+
+    gcloud deploy releases create release-$SHORT_SHA \
+      --region=$LOCATION \
+      --project=$PROJECT_ID \
+      --delivery-pipeline=hackday-pipeline \
+      --images=hackday-image=$_IMAGE_NAME \
+      --deploy-parameters=deploy_branch=$BRANCH_NAME,deploy_sha=$SHORT_SHA
+
+substitutions:
+  _IMAGE_NAME: '$LOCATION-docker.pkg.dev/$PROJECT_ID/hack-day-docker-central/hackathon:$SHORT_SHA'
+  _VERIFY_IMAGE_NAME: '$LOCATION-docker.pkg.dev/$PROJECT_ID/hack-day-docker-central/hackathon-verify:$SHORT_SHA'
 
 options:
   pool:
     name: 'projects/decomp-phase-2-hack-day/locations/us-central1/workerPools/hackday-pool'
   logging: CLOUD_LOGGING_ONLY
+  dynamicSubstitutions: true
+  automapSubstitutions: true

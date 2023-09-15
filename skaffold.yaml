@@ -36,11 +36,22 @@ profiles:
     deploy:
       cloudrun: {}
     verify:
-      - name: hackday-verify-image
+      - name: hackday-verify
         container:
-          name: hackday-verify-image
-          image: hackday-verify-image
-          args: [ 'run' ]
+          name: hackday-verify
+          image: gcr.io/google.com/cloudsdktool/cloud-sdk
+          env:
+          - name: DEPLOY_BRANCH
+            value: master # from-param: ${deploy_branch}
+          - name: GIT_SHA
+            value: unknown # from-param: ${deploy_sha}
+          entrypoint: bash
+          args:
+          - '-c'
+          - |-
+            gcloud builds triggers run hackday-verify \
+              --sha=$DEPLOY_SHA \
+              --substitutions _CLOUD_RUN_PROJECT=$CLOUD_RUN_PROJECT,_CLOUD_RUN_SERVICE=$CLOUD_RUN_SERVICE,_CLOUD_RUN_REVISION=$CLOUD_RUN_REVISION,_GIT_SHA=$GIT_SHA
     manifests:
       rawYaml:
         - cicd/cloud-run-dev.yaml

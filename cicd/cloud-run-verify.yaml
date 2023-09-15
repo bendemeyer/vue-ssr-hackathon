@@ -1,23 +1,27 @@
 apiVersion: run.googleapis.com/v1
 kind: Job
 metadata:
-  name: hackday-verify
+  name: hackday-verify-DEPLOY_BRANCH_HASH
+  labels:
+    custom.zoro.com/branch: DEPLOY_BRANCH_NAME
   annotations:
     run.googleapis.com/launch-stage: BETA
 spec:
   template:
     metadata:
+      labels:
+        custom.zoro.com/branch: DEPLOY_BRANCH_NAME
       annotations:
         run.googleapis.com/network-interfaces: '[{"network":"hackday-vpc","subnetwork":"hackday-subnet-central"}]'
         run.googleapis.com/vpc-access-egress: private-ranges-only
     spec:
-      taskCount: 10
-      parallelism: 10
+      taskCount: 1
+      parallelism: 1
       template:
         spec:
           maxRetries: 0
           containers:
-            - image: us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:d655876
+            - image: us-central1-docker.pkg.dev/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify:DEPLOY_SHA
               args: ['run']
               env:
                 - name: CYPRESS_BASE_URL
