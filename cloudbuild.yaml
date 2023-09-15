@@ -31,7 +31,7 @@ steps:
 # Deploy using cloud deploy to cloud run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   script: |
-    #!/bin/bash
+    #!/bin/bash -e
     BRANCH_HASH="$(echo $BRANCH_NAME | sha256sum | head -c8)"
 
     sed -i "s/BRANCH_HASH/$BRANCH_HASH/g" clouddeploy.yaml

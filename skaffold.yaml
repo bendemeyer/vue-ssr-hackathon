@@ -47,7 +47,7 @@ profiles:
             value: unknown # from-param: ${deploy_sha}
           entrypoint: bash
           args:
-          - '-c'
+          - '-ec'
           - |-
             gcloud builds triggers run hackday-verify \
               --sha=$DEPLOY_SHA \
