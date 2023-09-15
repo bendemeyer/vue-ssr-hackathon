@@ -3,7 +3,7 @@ kind: DeliveryPipeline
 metadata:
   name: hackday-pipeline
   labels:
-    custom.zoro.com/branch: BRANCH_NAME
+    originBranch: BRANCH_NAME
 description: hackday pipeline
 serialPipeline:
   stages:
