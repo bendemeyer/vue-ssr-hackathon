@@ -55,6 +55,7 @@ profiles:
                 --tasks=1 \
                 --parallelism=1 \
                 --labels=origin-branch=$BRANCH_NAME \
+                --region=us-central1 \
                 --vpc-egress=private-ranges-only \
                 --network=hackday-vpc \
                 --subnet=hackday-subnet-central
