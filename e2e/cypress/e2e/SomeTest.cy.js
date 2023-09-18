@@ -8,6 +8,6 @@ describe('some test', () => {
   it('should pass', () => {
     cy.visit('/');
 
-    cy.get('.root').should('contain', 'Brandon & co');
+    cy.get('.root').should('contain', 'Brandon & co & stuff');
   });
 });
