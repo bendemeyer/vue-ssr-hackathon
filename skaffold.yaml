@@ -43,10 +43,7 @@ profiles:
           command: ['bash']
           args:
             - '-ec'
-            - >-
-              gcloud builds triggers run hackday-verify \
-                --sha=$DEPLOY_SHA \
-                --substitutions _CLOUD_RUN_PROJECT=$CLOUD_RUN_PROJECT,_CLOUD_RUN_SERVICE=$CLOUD_RUN_SERVICE,_CLOUD_RUN_REVISION=$CLOUD_RUN_REVISION,_DEPLOY_SHA=$DEPLOY_SHA,_DEPLOY_BRANCH=$DEPLOY_BRANCH
+            - 'gcloud builds triggers run hackday-verify --sha=$DEPLOY_SHA --substitutions _CLOUD_RUN_PROJECT=$CLOUD_RUN_PROJECT,_CLOUD_RUN_SERVICE=$CLOUD_RUN_SERVICE,_CLOUD_RUN_REVISION=$CLOUD_RUN_REVISION,_DEPLOY_SHA=$DEPLOY_SHA,_DEPLOY_BRANCH=$DEPLOY_BRANCH'
     manifests:
       rawYaml:
         - cicd/cloud-run-dev.yaml
