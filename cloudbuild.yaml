@@ -32,12 +32,17 @@ steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   env:
   - 'IMAGE_NAME=$_IMAGE_NAME'
+  - 'VERIFY_IMAGE_NAME=$VERIFY_IMAGE_NAME'
   script: |
     #!/bin/bash -e
     BRANCH_HASH="$(echo ${BRANCH_NAME} | sha256sum | head -c8)"
 
     sed -i "s|\$BRANCH_HASH|${BRANCH_HASH}|g" clouddeploy.yaml
     sed -i "s|\$BRANCH_NAME|${BRANCH_NAME}|g" clouddeploy.yaml
+    
+    sed -i "s|\$BRANCH_HASH|${BRANCH_HASH}|g" skaffold.yaml
+    sed -i "s|\$BRANCH_NAME|${BRANCH_NAME}|g" skaffold.yaml
+    sed -i "s|\$VERIFY_IMAGE_NAME|${VERIFY_IMAGE_NAME}|g" skaffold.yaml
     sed -i "s|\$DEPLOY_BRANCH|${BRANCH_NAME}|g" skaffold.yaml
     sed -i "s|\$DEPLOY_SHA|${REVISION_ID}|g" skaffold.yaml
 
