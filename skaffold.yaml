@@ -42,7 +42,7 @@ profiles:
           image: gcr.io/google.com/cloudsdktool/cloud-sdk
           command: ['bash']
           args:
-            - '-exc'
+            - '-ec'
             - |-
               gcloud beta run jobs update hackday-verify-$BRANCH_HASH \
                 --wait \
@@ -67,16 +67,33 @@ profiles:
     deploy:
       cloudrun: {}
     verify:
-      - name: hackday-verify-image
-        container:
-          name: hackday-verify-image
-          image: hackday-verify-image
-          args: [ 'run' ]
-      - name: ubuntu
-        container:
-          name: ubuntu
-          image: ubuntu
-          args: [ 'env' ]
+    - name: hackday-verify
+      container:
+        name: hackday-verify
+        image: gcr.io/google.com/cloudsdktool/cloud-sdk
+        command: ['bash']
+        args:
+        - '-ec'
+        - |-
+          gcloud run services update-traffic $CLOUD_RUN_SERVICE \
+            --region=us-central1 \
+            --update-tags=rc=$CLOUD_RUN_REVISION \
+          && \
+          gcloud beta run jobs update hackday-verify-$BRANCH_HASH \
+            --wait \
+            --image=$VERIFY_IMAGE_NAME \
+            --args=run \
+            --set-env-vars=NO_COLOR=1,ELECTRON_ENABLE_LOGGING=1,CYPRESS_BASE_URL=${CLOUD_RUN_SERVICE_URLS/\/\//\/\/rc---} \
+            --cpu=1000m \
+            --memory=1Gi \
+            --max-retries=0 \
+            --tasks=1 \
+            --parallelism=1 \
+            --labels=origin-branch=$BRANCH_NAME \
+            --region=us-central1 \
+            --vpc-egress=private-ranges-only \
+            --network=hackday-vpc \
+            --subnet=hackday-subnet-central
     manifests:
       rawYaml:
         - cicd/cloud-run-prod.yaml
