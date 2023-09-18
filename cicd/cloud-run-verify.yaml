@@ -25,7 +25,7 @@ spec:
               args: ['run']
               env:
                 - name: CYPRESS_BASE_URL
-                  value: 'https://old---deploy-hackday-dev-sksi3wav7q-uc.a.run.app'
+                  value: $CLOUD_RUN_SERVICE_URLS
                 - name: NO_COLOR
                   value: '1'
                 - name: ELECTRON_ENABLE_LOGGING
