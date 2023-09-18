@@ -42,7 +42,7 @@ profiles:
           image: gcr.io/google.com/cloudsdktool/cloud-sdk
           command: ['bash']
           args:
-            - '-ec'
+            - '-exc'
             - 'gcloud builds triggers run hackday-verify --sha=$DEPLOY_SHA --substitutions _CLOUD_RUN_PROJECT=$CLOUD_RUN_PROJECT,_CLOUD_RUN_SERVICE=$CLOUD_RUN_SERVICE,_CLOUD_RUN_REVISION=$CLOUD_RUN_REVISION,_DEPLOY_SHA=$DEPLOY_SHA,_DEPLOY_BRANCH=$DEPLOY_BRANCH'
     manifests:
       rawYaml:
