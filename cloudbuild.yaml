@@ -36,10 +36,10 @@ steps:
     #!/bin/bash -e
     BRANCH_HASH="$(echo ${BRANCH_NAME} | sha256sum | head -c8)"
 
-    sed -i "s/\$BRANCH_HASH/${BRANCH_HASH}/g" clouddeploy.yaml
-    sed -i "s/\$BRANCH_NAME/${BRANCH_NAME}/g" clouddeploy.yaml
-    sed -i "s/\$DEPLOY_BRANCH/${BRANCH_NAME}/g" skaffold.yaml
-    sed -i "s/\$DEPLOY_SHA/${REVISION_ID}/g" skaffold.yaml
+    sed -i "s|\$BRANCH_HASH|${BRANCH_HASH}|g" clouddeploy.yaml
+    sed -i "s|\$BRANCH_NAME|${BRANCH_NAME}|g" clouddeploy.yaml
+    sed -i "s|\$DEPLOY_BRANCH|${BRANCH_NAME}|g" skaffold.yaml
+    sed -i "s|\$DEPLOY_SHA|${REVISION_ID}|g" skaffold.yaml
 
     gcloud deploy apply \
       --file=clouddeploy.yaml \
