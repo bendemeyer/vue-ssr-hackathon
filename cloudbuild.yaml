@@ -38,7 +38,7 @@ steps:
 
     sed -i "s/\$BRANCH_HASH/${BRANCH_HASH}/g" clouddeploy.yaml
     sed -i "s/\$BRANCH_NAME/${BRANCH_NAME}/g" clouddeploy.yaml
-    sed -i "s/\$BRANCH_NAME/${BRANCH_NAME}/g" skaffold.yaml
+    sed -i "s/\$DEPLOY_BRANCH/${BRANCH_NAME}/g" skaffold.yaml
     sed -i "s/\$DEPLOY_SHA/${SHORT_SHA}/g" skaffold.yaml
 
     gcloud deploy apply \
