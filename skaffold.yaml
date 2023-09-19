@@ -75,7 +75,7 @@ profiles:
         args:
         - '-ec'
         - |-
-          gcloud run services update-traffic $CLOUD_RUN_SERVICE \
+          gcloud run services update-traffic ${CLOUD_RUN_SERVICE##*/} \
             --region=us-central1 \
             --update-tags=rc=$CLOUD_RUN_REVISION \
           && \
