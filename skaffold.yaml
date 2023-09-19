@@ -77,13 +77,13 @@ profiles:
         - |-
           gcloud run services update-traffic ${CLOUD_RUN_SERVICE##*/} \
             --region=us-central1 \
-            --update-tags=rc=$CLOUD_RUN_REVISION \
+            --update-tags=rc-preview=$CLOUD_RUN_REVISION \
           && \
           gcloud beta run jobs update hackday-verify-$BRANCH_HASH \
             --wait \
             --image=$VERIFY_IMAGE_NAME \
             --args=run \
-            --set-env-vars=NO_COLOR=1,ELECTRON_ENABLE_LOGGING=1,CYPRESS_BASE_URL=${CLOUD_RUN_SERVICE_URLS/\/\//\/\/rc---} \
+            --set-env-vars=NO_COLOR=1,ELECTRON_ENABLE_LOGGING=1,CYPRESS_BASE_URL=${CLOUD_RUN_SERVICE_URLS/\/\//\/\/rc-preview---} \
             --cpu=1000m \
             --memory=1Gi \
             --max-retries=0 \
