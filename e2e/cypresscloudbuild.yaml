@@ -1,18 +1,18 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', "${_IMAGE_LOCATION}:cypress-tro", "."]
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args:
-  - 'deploy'
-  - 'releases'
-  - 'create'
-  - 'penguin-$$DATE-$$TIME'
-  - '--images'
-  - 'image1=${_IMAGE_LOCATION}:$SHORT_SHA'
-  - '--region'
-  - 'us-east1'
-  - '--delivery-pipeline=yaml-pipeline'
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   entrypoint: gcloud
+#   args:
+#   - 'deploy'
+#   - 'releases'
+#   - 'create'
+#   - 'cypress-tro-$$DATE-$$TIME'
+#   - '--images'
+#   - 'image1=${_IMAGE_LOCATION}:$SHORT_SHA'
+#   - '--region'
+#   - 'us-east1'
+#   - '--delivery-pipeline=yaml-pipeline'
 images:
 - "${_IMAGE_LOCATION}:cypress-tro"
 substitutions:
