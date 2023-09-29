@@ -6,7 +6,7 @@ build:
   local: {}
 manifests:
   rawYaml:
-    - /workspace/source/run-target-2.yaml
+    - target.yaml
 deploy:
   cloudrun: {}
   logs:
