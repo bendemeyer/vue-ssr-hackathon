@@ -10,6 +10,8 @@ steps:
   args:
   - 'deploy'
   - 'releases'
+  - 'create'
+  - 'penguin-1'
   - '--images'
   - 'image1=us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
   - '--region'
