@@ -16,4 +16,4 @@ images:
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
-  args: ['deploy', 'hackathon-google-try-again', '--image', 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:tagurit', '--region', 'us-east1']
+  args: ['run' , 'deploy', 'yeehaw', '--image', 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:tagurit', '--region', 'us-east1']
