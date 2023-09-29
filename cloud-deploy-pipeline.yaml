@@ -8,6 +8,9 @@ serialPipeline:
   - targetId: target
     profiles:
     - test
+    strategy:
+     standard:
+       verify: true
   
 ---
 
