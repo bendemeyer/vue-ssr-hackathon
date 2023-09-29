@@ -1,14 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  labels:
-    delivery-pipeline-id: yaml-pipeline
-    location: us-east1
-    managed-by: google-cloud-deploy
-    project-id: dvplt-hackathon-sandbox
-    release-id: release-bsrn2pw
-    target-id: hackathon-google-try-again-target-2
-  name: target
+  name: test-target-zach
 spec:
   template:
     spec:

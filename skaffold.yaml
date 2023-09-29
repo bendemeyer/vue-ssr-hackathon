@@ -4,9 +4,12 @@ build:
   tagPolicy:
     gitCommit: {}
   local: {}
-manifests:
-  rawYaml:
-    - target.yaml
+profiles:
+  - name: test
+    manifests:
+      rawYaml:
+      - manifest.yaml
+
 deploy:
   cloudrun: {}
   logs:
