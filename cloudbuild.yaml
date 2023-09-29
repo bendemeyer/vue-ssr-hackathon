@@ -5,7 +5,7 @@ steps:
   args:
   - 'build'
   - '-t'
-  - '${_IMAGE_LOCATION}'
+  - '${_IMAGE_LOCATION}:$SHORT_SHA'
   - '.'
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
@@ -15,7 +15,7 @@ steps:
   - 'create'
   - 'penguin-$$DATE-$$TIME'
   - '--images'
-  - 'image1=${_IMAGE_LOCATION}'
+  - 'image1=${_IMAGE_LOCATION}:$SHORT_SHA'
   - '--region'
   - 'us-east1'
   - '--delivery-pipeline=yaml-pipeline'
