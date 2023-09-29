@@ -7,7 +7,7 @@ const PLUGIN_NAME = 'stats-plugin';
 function stripModuleIdHash(id) {
   return id.replace(/\|\w+$/, '');
 }
-
+// triggering a cloud build change
 class ChunkPlugin {
   constructor() {
     //
