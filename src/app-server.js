@@ -12,7 +12,6 @@ import root from './root.vue';
 import routes from './routes';
 
 import lodash from 'lodash'
-import fs from 'fs'
 import { createPinia, PiniaVuePlugin } from 'pinia';
 import { createRenderer } from 'vue-server-renderer';
 
