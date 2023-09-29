@@ -10,9 +10,10 @@ steps:
   args:
   - 'deploy'
   - 'releases'
-  - '--image'
-  - 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+  - '--images'
+  - 'image1=us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
   - '--region'
   - 'us-east1'
+  - '--delivery-pipeline=yaml-pipeline'
 images:
 - 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
