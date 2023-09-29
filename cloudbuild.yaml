@@ -1,10 +1,4 @@
 steps:
-# NPM install and Test
-- name: "gcr.io/cloud-builders/npm"
-  args: ["install"]
-- name: "gcr.io/cloud-builders/npm"
-  args: ["run", "test"] 
-steps:
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'build'
@@ -16,4 +10,4 @@ images:
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
-  args: ['run' , 'deploy', 'yeehaw', '--image', 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:tagurit', '--region', 'us-east1']
+  args: ['run', 'deploy', 'hackathon-google-try-again-target-2', '--image', 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:tagurit', '--region', 'us-east1']
