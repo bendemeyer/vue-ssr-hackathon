@@ -22,4 +22,4 @@ steps:
 images:
 - '${_IMAGE_LOCATION}:$SHORT_SHA'
 substitutions:
-  _IMAGE_LOCATION: "us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:$SHORT_SHA"
+  _IMAGE_LOCATION: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app
