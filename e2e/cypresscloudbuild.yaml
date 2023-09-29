@@ -16,4 +16,4 @@ steps:
 images:
 - "${_IMAGE_LOCATION}:cypress-tro"
 substitutions:
-  _IMAGE_LOCATION: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app
+  _IMAGE_LOCATION: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app-cypress
