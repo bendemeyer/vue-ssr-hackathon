@@ -5,7 +5,7 @@ steps:
   args:
   - 'build'
   - '-t'
-  - 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+  - 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:$SHORT_SHA'
   - '.'
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
@@ -13,11 +13,11 @@ steps:
   - 'deploy'
   - 'releases'
   - 'create'
-  - 'penguin-$$SHORT_SHA'
+  - 'penguin-$$DATE-$$TIME'
   - '--images'
-  - 'image1=us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+  - 'image1=us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:$SHORT_SHA'
   - '--region'
   - 'us-east1'
   - '--delivery-pipeline=yaml-pipeline'
 images:
-- 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+- 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:$SHORT_SHA'
