@@ -7,6 +7,28 @@ steps:
   - '-t'
   - '${_IMAGE_LOCATION}:$SHORT_SHA'
   - '.'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '-t'
+  - '${_CYPRESS_IMAGE_LOCATION}:${SHORT_SHA}'
+  - 'e2e'
+  id: 'build-e2e'
+
+- name: 'gcr.io/cloud-builders/docker'
+  dir: 'e2e'
+  args: ['push', '${_CYPRESS_IMAGE_LOCATION}:${SHORT_SHA}']
+  waitFor: ['build-e2e']
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  env:
+    - 'CYPRESS_IMAGE=${_CYPRESS_IMAGE_LOCATION}:${SHORT_SHA}'
+  script: |
+      #!/bin/bash -e
+    
+      sed -i "s|\$CYPRESS_IMAGE|${CYPRESS_IMAGE}|g" skaffold.yaml
+    
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
   args:
@@ -23,3 +45,4 @@ images:
 - '${_IMAGE_LOCATION}:$SHORT_SHA'
 substitutions:
   _IMAGE_LOCATION: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app
+  _CYPRESS_IMAGE_LOCATION: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app-cypress

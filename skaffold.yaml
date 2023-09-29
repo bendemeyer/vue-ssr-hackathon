@@ -17,5 +17,13 @@ verify:
 - name: cypress-test
   container:
     name: cypress-test
-    image: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app-cypress
-    command: ["cypress", "run"]
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk
+    command: ['bash']
+    args:
+      - '-ec'
+      - |-
+          gcloud beta run jobs update hackathon-app-cypress-1 \ 
+          --wait \
+          --image=us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app-cypress \ 
+          --set-env-vars=NO_COLOR=1,ELECTRON_ENABLE_LOGGING=1,CYPRESS_BASE_URL='https://test-target-zach-zjzviegylq-ue.a.run.app' \
+          --args=run
