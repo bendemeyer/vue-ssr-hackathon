@@ -2,8 +2,9 @@ import express  from 'express';
 import fastify from 'fastify'
 import fastifyStatic from '@fastify/static';
 // import { createHead, renderHeadToString } from '@vueuse/head';
-import ssrManifest from '../dist/browser/ssr-manifest.json';
+//import ssrManifest from '../dist/browser/ssr-manifest.json';
 
+import fs from 'fs';
 import path  from 'path';
 import Vue, { provide } from 'vue';
 import VueRouter from 'vue-router';
@@ -18,6 +19,7 @@ import { createRenderer } from 'vue-server-renderer';
 const oldapp=express()
 const app = fastify({logger: true})
 const port = 3000;
+const ssrManifest = JSON.parse(fs.readFileSync('../dist/browser/ssr-manifest.json'))
 
 //app.use(cookieParser());
 
