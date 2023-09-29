@@ -5,7 +5,7 @@ steps:
   args:
   - 'build'
   - '-t'
-  - 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+  - 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:$GIT_COMMIT'
   - '.'
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
@@ -15,9 +15,9 @@ steps:
   - 'create'
   - 'penguin-1'
   - '--images'
-  - 'image1=us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+  - 'image1=us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:$GIT_COMMIT'
   - '--region'
   - 'us-east1'
   - '--delivery-pipeline=yaml-pipeline'
 images:
-- 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+- 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:$GIT_COMMIT'
