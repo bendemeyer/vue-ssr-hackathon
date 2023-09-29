@@ -1,0 +1,23 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  labels:
+    delivery-pipeline-id: hackathon-google-try-again
+    location: us-east1
+    managed-by: google-cloud-deploy
+    project-id: dvplt-hackathon-sandbox
+    release-id: release-bsrn2pw
+    target-id: hackathon-google-try-again-target-2
+  name: hackathon-google-try-again-target-2
+spec:
+  template:
+    spec:
+      containers:
+      - image: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app@sha256:524e5c629f1e29b8242001f78b441e91c5d3c1e599ba20ec2c621ab686bc8e0e
+        ports:
+        - containerPort: 3000
+    metadata:
+      name: hackathon-google-try-again-target-2-ln4qymyb
+  traffic:
+  - revisionName: hackathon-google-try-again-target-2-ln4qymyb
+    percent: 100

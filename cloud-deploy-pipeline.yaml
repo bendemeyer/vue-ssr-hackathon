@@ -1,0 +1,10 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: hackathon-google-try-again
+description: hackathon-google-try-again
+serialPipeline:
+  stages:
+  - targetId: hackathon-google-try-again-target-2
+    profiles:
+    - target-2
