@@ -9,8 +9,13 @@ profiles:
     manifests:
       rawYaml:
       - manifest.yaml
-
 deploy:
   cloudrun: {}
   logs:
     prefix: container
+verify:
+- name: cypress-test
+  container:
+    name: cypress-test
+    image: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app-cypress
+    command: ["cypress", "run"]
