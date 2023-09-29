@@ -1,9 +1,25 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'build'
   - '-t'
-  - 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+  - '${_IMAGE_LOCATION}:$SHORT_SHA'
   - '.'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'deploy'
+  - 'releases'
+  - 'create'
+  - 'penguin-$$DATE-$$TIME'
+  - '--images'
+  - 'image1=${_IMAGE_LOCATION}:$SHORT_SHA'
+  - '--region'
+  - 'us-east1'
+  - '--delivery-pipeline=yaml-pipeline'
 images:
-- 'us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
+- '${_IMAGE_LOCATION}:$SHORT_SHA'
+substitutions:
+  _IMAGE_LOCATION: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app
