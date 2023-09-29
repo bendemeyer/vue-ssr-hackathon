@@ -13,7 +13,7 @@ steps:
   - 'deploy'
   - 'releases'
   - 'create'
-  - '$DATE-$TIME-penguin'
+  - 'penguin-$$SHORT_SHA'
   - '--images'
   - 'image1=us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:jake'
   - '--region'
