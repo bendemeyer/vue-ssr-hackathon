@@ -16,7 +16,11 @@ provider "google" {
 locals {
   domain = "hackday3.vetruvet.com"
   region = "us-east1"
+  project = "dvplt-hackathon-sandbox"
+  envs = { for tuple in regexall("(.*)=(.*)", file(".env")) : tuple[0] => tuple[1] }
 }
+
+data "google_project" "project" {}
 
 resource "google_compute_global_address" "lb_ip" {
   name = "hackday-lb-ip"
@@ -29,6 +33,37 @@ output "lb_ip" {
 resource "google_project_service" "certificatemanager_svc" {
   service = "certificatemanager.googleapis.com"
   disable_on_destroy = false
+}
+
+resource "google_project_service" "iap_svc" {
+  service = "iap.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_iap_brand" "hackday_brand" {
+  support_email = "val.trubachev@zoro.com"
+  application_title = "Hackathon Test"
+  # org_internal_only = true
+}
+
+resource "google_iap_client" "iap_client" {
+  display_name = "Hackathon Test Client"
+  brand = google_iap_brand.hackday_brand.name
+}
+
+resource "google_project_service_identity" "iap_sa" {
+  provider = google-beta
+  project = local.project
+  service = "iap.googleapis.com"
+}
+
+resource "google_project_iam_binding" "iap_cloudrun" {
+  project = local.project
+  role = "roles/run.invoker"
+  members = [
+    "serviceAccount:${google_project_service_identity.iap_sa.email}"
+    # "serviceAccount:service-${data.google_project.project.number}@gcp-sa-iap.iam.gserviceaccount.com"
+  ]
 }
 
 resource "google_dns_managed_zone" "hackday3_zone" {
@@ -114,6 +149,14 @@ resource "google_compute_backend_service" "cloudrun_backend" {
   backend {
     group = google_compute_region_network_endpoint_group.cloudrun_neg.id
   }
+  iap {
+    oauth2_client_id = google_iap_client.iap_client.client_id
+    oauth2_client_secret = google_iap_client.iap_client.secret
+  }
+}
+
+output "authorized-redirect-uri" {
+  value = "https://iap.googleapis.com/v1/oauth/clientIds/${local.envs["OAUTH_CLIENT_ID"]}:handleRedirect"
 }
 
 resource "google_compute_url_map" "cloudrun_map" {
