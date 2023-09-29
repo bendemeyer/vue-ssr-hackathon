@@ -14,6 +14,6 @@ steps:
   - 'us-east1'
   - '--delivery-pipeline=yaml-pipeline'
 images:
-- "${_IMAGE_LOCATION:cypress-tro"
+- "${_IMAGE_LOCATION}:cypress-tro"
 substitutions:
   _IMAGE_LOCATION: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app
