@@ -5,8 +5,6 @@ EXPOSE 3000
 
 # copy just package.json so npm i step can be cached if package.json doesn't change
 COPY package.json ./
-RUN rm package-lock.json
-RUN rm -rf /node_modules
 RUN npm i
 
 # now copy everything else and run the buidl
