@@ -1,0 +1,16 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+build:
+  tagPolicy:
+    gitCommit: {}
+  local: {}
+profiles:
+  - name: test
+    manifests:
+      rawYaml:
+      - manifest.yaml
+
+deploy:
+  cloudrun: {}
+  logs:
+    prefix: container
