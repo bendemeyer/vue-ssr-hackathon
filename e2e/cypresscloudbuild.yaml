@@ -1,5 +1,19 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', "us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:cypress-tro", "."]
+  args: ['build', '-t', "${_IMAGE_LOCATION}:cypress-tro", "."]
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'deploy'
+  - 'releases'
+  - 'create'
+  - 'penguin-$$DATE-$$TIME'
+  - '--images'
+  - 'image1=${_IMAGE_LOCATION}:$SHORT_SHA'
+  - '--region'
+  - 'us-east1'
+  - '--delivery-pipeline=yaml-pipeline'
 images:
-- "us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app:cypress-tro"
+- "${_IMAGE_LOCATION:cypress-tro"
+substitutions:
+  _IMAGE_LOCATION: us-east1-docker.pkg.dev/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app
