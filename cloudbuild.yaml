@@ -1,32 +1,26 @@
 steps:
-# NPM install and Test
-- name: "gcr.io/cloud-builders/npm"
-  args: ["install"]
-- name: "gcr.io/cloud-builders/npm"
-  args: ["run", "test"]
-  id: test
-
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', '$_IMAGE_NAME', '.']
   id: 'build'
-  waitFor: ['test']
-# Push the container image to Container Registry
+
+# Build dev image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', '$_IMAGE_NAME']
+  args: ['build', '-t', 'hackday-dev', '--target', 'dev', '.']
+  id: 'build-dev'
   waitFor: ['build']
+
+# Run tests
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['run', 'hackday-dev', 'npm', 'run', 'test']
+  id: 'test'
+  waitFor: ['build-dev']
 
 # Build the test image
 - name: 'gcr.io/cloud-builders/docker'
   dir: 'e2e'
   args: ['build', '-t', '$_VERIFY_IMAGE_NAME', '.']
   id: 'build-e2e'
-  waitFor: ['test']
-# Push the test image to Container Registry
-- name: 'gcr.io/cloud-builders/docker'
-  dir: 'e2e'
-  args: ['push', '$_VERIFY_IMAGE_NAME']
-  waitFor: ['build-e2e']
 
 # Deploy using cloud deploy to cloud run
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -61,6 +55,10 @@ steps:
 substitutions:
   _IMAGE_NAME: '${LOCATION}-docker.pkg.dev/${PROJECT_ID}/hackathon-docker/hackathon:${SHORT_SHA}'
   _VERIFY_IMAGE_NAME: '${LOCATION}-docker.pkg.dev/${PROJECT_ID}/hackathon-docker/hackathon-verify:${SHORT_SHA}'
+
+images:
+- '${_IMAGE_NAME}'
+- '${_VERIFY_IMAGE_NAME}'
 
 options:
   logging: CLOUD_LOGGING_ONLY

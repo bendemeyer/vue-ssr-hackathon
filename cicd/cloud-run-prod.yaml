@@ -19,11 +19,6 @@ spec:
           env:
             - name: FOO
               value: prod foo
-            - name: BAR
-              valueFrom:
-                secretKeyRef:
-                  key: latest
-                  name: val-secret2
           resources:
             limits:
               cpu: 500m
