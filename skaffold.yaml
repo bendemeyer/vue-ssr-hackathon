@@ -55,10 +55,7 @@ profiles:
                 --tasks=1 \
                 --parallelism=1 \
                 --labels=origin-branch=$BRANCH_NAME \
-                --region=us-east1 \
-                --vpc-egress=private-ranges-only \
-                --network=hackday-vpc \
-                --subnet=hackday-subnet-central
+                --region=us-east1
             # - 'gcloud builds triggers run hackday-verify --region=us-east1 --sha=$DEPLOY_SHA --substitutions _CLOUD_RUN_PROJECT=$CLOUD_RUN_PROJECT,_CLOUD_RUN_SERVICE=$CLOUD_RUN_SERVICE,_CLOUD_RUN_REVISION=$CLOUD_RUN_REVISION,_CLOUD_RUN_SERVICE_URLS=$CLOUD_RUN_SERVICE_URLS,_DEPLOY_BRANCH=$DEPLOY_BRANCH'
     manifests:
       rawYaml:
@@ -90,10 +87,7 @@ profiles:
             --tasks=1 \
             --parallelism=1 \
             --labels=origin-branch=$BRANCH_NAME \
-            --region=us-east1 \
-            --vpc-egress=private-ranges-only \
-            --network=hackday-vpc \
-            --subnet=hackday-subnet-central
+            --region=us-east1
     manifests:
       rawYaml:
         - cicd/cloud-run-prod.yaml
