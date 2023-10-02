@@ -1,4 +1,4 @@
-ARG BASE=gcr.io/decomp-phase-2-hack-day/hack-day-docker-central/hackathon-verify-base:latest
+ARG BASE=gcr.io/dvplt-hackathon-sandbox/hackathon-docker/hackathon-app-cypress-base:latest
 FROM $BASE
 
 ENV NO_COLOR=1
