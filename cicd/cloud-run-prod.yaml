@@ -8,7 +8,6 @@ spec:
   template:
     metadata:
       annotations:
-        run.googleapis.com/vpc-access-connector: cloud-run-vpc-access
         run.googleapis.com/startup-cpu-boost: 'true'
     spec:
       containers:
