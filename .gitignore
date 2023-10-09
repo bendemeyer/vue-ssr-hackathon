@@ -106,3 +106,6 @@ dist
 .idea
 .vscode
 package-lock.json
+
+.terraform*
+*.tfstate*

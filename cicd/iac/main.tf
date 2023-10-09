@@ -7,17 +7,17 @@ terraform {
   }
 }
 
-provider "google" {
+locals {
   project = "dvplt-hackathon-sandbox"
   region = "us-east1"
   zone = "us-east1-b"
+  domain = "hackday3.vetruvet.com"
 }
 
-locals {
-  domain = "hackday3.vetruvet.com"
-  region = "us-east1"
-  project = "dvplt-hackathon-sandbox"
-  envs = { for tuple in regexall("(.*)=(.*)", file(".env")) : tuple[0] => tuple[1] }
+provider "google" {
+  project = local.project
+  region = local.region
+  zone = local.zone
 }
 
 data "google_project" "project" {}
